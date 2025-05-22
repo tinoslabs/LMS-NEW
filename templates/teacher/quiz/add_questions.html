@@ -1,0 +1,102 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Question</h4>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card mb-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-header mb-0">Add Questions</h5>
+                    
+                        <button type="button" class="btn btn-primary me-4" data-bs-toggle="modal" data-bs-target="#largeModal">
+                            View Questions
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            {{ question_form.as_p }}
+                            <button type="submit" class="btn btn-primary">Save Question</button>
+                        </form>
+                        
+                    </div>
+                </div>
+                
+
+            
+            </div>
+            <!-- / Content -->
+            
+            <!-- Large Modal -->
+            <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel3">My Questions</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="table-responsive text-nowrap">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Question</th>
+                                            <th>Option 1</th>
+                                            <th>Option 2</th>
+                                            <th>Option 3</th>
+                                            <th>Option 4</th>
+                                            <th><span class="badge bg-label-success me-1">Correct Option</span></th>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
+                                        {% for question in quiz.questions.all %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ question.question_text }}</td>
+                                                <td>{{ question.option_1 }}</td>
+                                                <td>{{ question.option_2 }}</td>
+                                                <td>{{ question.option_3 }}</td>
+                                                <td>{{ question.option_4 }}</td>
+                                                <td>
+                                                    <span class="badge bg-label-success me-1">
+                                                    {% if question.correct_option == 1 %}     {{ question.option_1 }}
+                                                    {% elif question.correct_option == 2 %}   {{ question.option_2 }}
+                                                    {% elif question.correct_option == 3 %}   {{ question.option_3 }}
+                                                    {% elif question.correct_option == 4 %}   {{ question.option_4 }}
+                                                    {% endif %}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="6">No questions available for this course.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {% endblock %}

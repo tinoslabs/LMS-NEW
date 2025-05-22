@@ -1,0 +1,580 @@
+{% extends 'base/base-1.html' %}
+{% load static %}
+
+
+{% block css_style %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}
+
+{% load course_tags %}
+{% block content %}
+    
+    <!--====== HEADER PART ENDS ======-->
+   
+    <!--====== SEARCH BOX PART START ======-->
+    
+    <div class="search-box">
+        <div class="serach-form">
+            <div class="closebtn">
+                <span></span>
+                <span></span>
+            </div>
+            <form action="#">
+                <input type="text" placeholder="Search by keyword">
+                <button><i class="fa fa-search"></i></button>
+            </form>
+        </div> <!-- serach form -->
+    </div>
+    
+    <!--====== SEARCH BOX PART ENDS ======-->
+
+    <!--====== PAGE BANNER PART START ======-->
+    
+    <section id="page-banner" class="pt-105 pb-110 bg_cover" data-overlay="8"  style="background-image: url('{% static "images/page-banner-2.jpg" %}');">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="page-banner-cont">
+                        <h2>{{course.title}}</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="# ">Courses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"> {{ course.title }} </li>
+                            </ol>
+                        </nav>
+                    </div>  <!-- page banner cont -->
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </section>
+    
+    <!--====== PAGE BANNER PART ENDS ======-->
+    
+    <!--====== COURSES SINGEl PART START ======-->
+    
+    <section id="corses-singel" class="pt-90 pb-120 gray-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="corses-singel-left mt-30">
+                        <div class="title">
+                            {% comment %} <h3>Learn basis javascirpt from start for beginner</h3> {% endcomment %}
+                            <h3>{{course.description|truncatewords:15}}</h3>
+                        </div> <!-- title -->
+                        <div class="course-terms">
+                            <ul>
+                                <li>
+                                    <div class="teacher-name">
+                                        <div class="thum round_img">
+                                            <img src="{{ course.author.user.profile_image.url }}" alt="Teacher">
+                                        </div>
+                                        <div class="name">
+                                            <span>Teacher</span>
+                                            <h6>{{course.author.user.username}}</h6>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="course-category">
+                                        <span>Category</span>
+                                        <h6>{{course.category}} </h6>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="review">
+                                        <span>Review</span>
+                                        <ul>
+                                            <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                            <li class="rating">(20 Reviws)</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div> <!-- course terms -->
+                        
+                        <div class="corses-singel-image pt-50">
+                            <img src="{{course.featured_image.url}}" alt="Courses">
+                        </div> <!-- corses singel image -->
+                        
+                        <div class="corses-tab mt-30">
+                            <ul class="nav nav-justified" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="curriculam-tab" data-toggle="tab" href="#curriculam" role="tab" aria-controls="curriculam" aria-selected="false">Curriculam</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="instructor-tab" data-toggle="tab" href="#instructor" role="tab" aria-controls="instructor" aria-selected="false">Instructor</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                                    <div class="overview-description">
+                                        <div class="singel-description pt-40">
+                                            <h6>Course Summery</h6>
+                                            <p>{{course.description|slice:"0:75"}}</p>
+                                        </div>
+                                        {% comment %} <div class="singel-description pt-40">
+                                            <h6>What You Will Learn</h6>
+                                            <p>{{course.description|slice:"0:75"}}</p>
+                                        </div> {% endcomment %}
+                                        <div class="singel-description pt-40">
+                                            <h6>Requrements</h6>
+                                                {% for requirements in course.requirements_set.all|slice:"0:10" %}
+                                            <p>{{requirements.points}}</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div> <!-- overview description -->
+                                </div>
+                                
+                                
+                               
+                                <div class="tab-pane fade" id="curriculam" role="tabpanel" aria-labelledby="curriculam-tab">
+                                    <div class="curriculam-cont">
+                                        <div class="title">
+                                            <h6>Curriculam</h6>
+                                        </div>
+                                        <div class="accordion" id="accordionExample">
+                                            {% for lesson in lessons %}
+                                            <div class="card">
+                                                <div class="card-header" id="heading{{ lesson.id }}">
+                                                    <a href="#" data-toggle="collapse" data-target="#collapse{{ lesson.id }}" aria-expanded="true" aria-controls="collapse{{ lesson.id }}">
+                                                        <ul>
+                                                            <li><i class="fa fa-file-o"></i></li>
+                                                            <li><span class="lecture">Lecture {{ forloop.counter }}</span></li>
+                                                            <li><span class="head">{{ lesson.name }}</span></li>
+                                                            <li><span class="time d-none d-md-block"><i class="fa fa-clock-o"></i> <span> {{ lesson.total_duration|default:"0" }}</span></li>
+                                                        </ul>
+                                                    </a>
+                                                </div>
+                                                
+                                                <div id="collapse{{ lesson.id }}" class="collapse" aria-labelledby="heading{{ lesson.id }}" data-parent="#accordionExample">
+                                                    <div class="card-body">
+                                                        {% for video in lesson.videomodel_set.all %}
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="bi bi-youtube" style="font-size: 20px; color: red;"></i>&nbsp
+                                                                {% if check_enroll %}
+                                                                <a href="/course/{{ course.id }}/watch-course/{{ video.id }}" class="rounded fancybox" data-fancybox>
+                                                                    <span class="ms-4 fw-bold">{{ video.title }}</span>
+                                                                </a>
+                                                                
+                                                                {% elif video.preview %}
+                                                                <a href="/course/{{ course.id }}/watch-course/{{ video.id }}" class="rounded fancybox" data-fancybox>
+                                                                    <span class="ms-4 fw-bold">{{ video.title }}</span>
+                                                                </a>
+                                                                {% else %}
+                                                                <a href="{% url 'register' %}" class="rounded fancybox" data-fancybox>
+
+                                                                <span data-toggle="tooltip" title="Enroll This Course!!">
+                                                                    <span class="ms-4 fw-bold">{{ video.title }}</span>&nbsp<i class="fa fa-lock"></i> <!-- Lock icon -->
+                                                                </span>
+                                                                </a>
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="badge btn-blue-soft me-5 font-size-sm fw-normal py-2">
+                                                                {{ video.time_duration }} min
+                                                            </div>
+                                                        {% endfor %}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <style>
+                                    /* Styling for Enroll This Course tooltip */
+                                    .enroll-tooltip[data-toggle="tooltip"] {
+                                        color: #007bff; /* Text color for the tooltip trigger */
+                                        font-weight: bold;
+                                        font-size: 1.1rem; /* Slightly larger trigger font */
+                                        cursor: pointer;
+                                        transition: color 0.2s ease-in-out;
+                                    }
+                                    
+                                    .enroll-tooltip[data-toggle="tooltip"]:hover {
+                                        color: #0056b3; /* Darker color on hover */
+                                    }
+                                    
+                                    /* Custom tooltip styling */
+                                    .tooltip.show .tooltip-inner {
+                                        background-color: #333; /* Dark background for contrast */
+                                        color: #ffcc00; /* Bright yellow text for emphasis */
+                                        font-size: 1.2rem; /* Increased tooltip font size */
+                                        padding: 10px 15px;
+                                        font-weight: bold;
+                                        border-radius: 8px; /* Slightly rounded edges */
+                                    }
+                                    
+                                    .tooltip.show .tooltip-arrow {
+                                        border-top-color: #333 !important; /* Match arrow color */
+                                    }
+                                    .round_img img {
+                                        max-width: 35%;
+                                    }
+                                    
+                                </style>
+                                <script>
+                                    $(function () {
+                                        $('[data-toggle="tooltip"]').tooltip();
+                                    });
+                                </script>
+                                <div class="tab-pane fade" id="instructor" role="tabpanel" aria-labelledby="instructor-tab">
+                                    <div class="instructor-cont">
+                                        <div class="instructor-author">
+                                            <div class="author-thum">
+                                                <img src="{{course.author.user.profile_image.url}}" alt="Instructor">
+                                            </div>
+                                            <div class="author-name">
+                                                <a href="#"><h5>{{course.author.user.username}}</h5></a>
+                                                <span>{{course.author.designation}}</span>
+                                                <ul class="social">
+                                                    <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="instructor-description pt-25">
+                                            <p>{{course.author.about_author}}</p>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                                    <div class="reviews-cont">
+                                        <div class="title">
+                                            <h6>Student Reviews</h6>
+                                        </div>
+                                        <ul>
+                                           <li>
+                                               <div class="singel-reviews">
+                                                    <div class="reviews-author">
+                                                        <div class="author-thum">
+                                                            <img src="{% static 'images/review/r-1.jpg' %}" alt="Reviews">
+                                                        </div>
+                                                        <div class="author-name">
+                                                            <h6>Bobby Aktar</h6>
+                                                            <span>April 03, 2019</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="reviews-description pt-20">
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which.</p>
+                                                        <div class="rating">
+                                                            <ul>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                            </ul>
+                                                            <span>/ 5 Star</span>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- singel reviews -->
+                                           </li>
+                                           <li>
+                                               <div class="singel-reviews">
+                                                    <div class="reviews-author">
+                                                        <div class="author-thum">
+                                                            <img src="{% static 'images/review/r-2.jpg' %}" alt="Reviews">
+                                                        </div>
+                                                        <div class="author-name">
+                                                            <h6>Humayun Ahmed</h6>
+                                                            <span>April 13, 2019</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="reviews-description pt-20">
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which.</p>
+                                                        <div class="rating">
+                                                            <ul>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                            </ul>
+                                                            <span>/ 5 Star</span>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- singel reviews -->
+                                           </li>
+                                           <li>
+                                               <div class="singel-reviews">
+                                                    <div class="reviews-author">
+                                                        <div class="author-thum">
+                                                            <img src="{% static 'images/review/r-3.jpg' %}" alt="Reviews">
+                                                        </div>
+                                                        <div class="author-name">
+                                                            <h6>Tania Aktar</h6>
+                                                            <span>April 20, 2019</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="reviews-description pt-20">
+                                                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which.</p>
+                                                        <div class="rating">
+                                                            <ul>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star"></i></li>
+                                                            </ul>
+                                                            <span>/ 5 Star</span>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- singel reviews -->
+                                           </li>
+                                        </ul>
+                                        <div class="title pt-15">
+                                            <h6>Leave A Comment</h6>
+                                        </div>
+                                        <div class="reviews-form">
+                                            <form action="#">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-singel">
+                                                            <input type="text" placeholder="Fast name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-singel">
+                                                            <input type="text" placeholder="Last Name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-singel">
+                                                            <div class="rate-wrapper">
+                                                                <div class="rate-label">Your Rating:</div>
+                                                                <div class="rate">
+                                                                    <div class="rate-item"><i class="fa fa-star" aria-hidden="true"></i></div>
+                                                                    <div class="rate-item"><i class="fa fa-star" aria-hidden="true"></i></div>
+                                                                    <div class="rate-item"><i class="fa fa-star" aria-hidden="true"></i></div>
+                                                                    <div class="rate-item"><i class="fa fa-star" aria-hidden="true"></i></div>
+                                                                    <div class="rate-item"><i class="fa fa-star" aria-hidden="true"></i></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-singel">
+                                                            <textarea placeholder="Comment"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-singel">
+                                                            <button type="button" class="main-btn">Post Comment</button>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- row -->
+                                            </form>
+                                        </div>
+                                    </div> <!-- reviews cont -->
+                                </div>
+                            </div> <!-- tab content -->
+                        </div>
+                    </div> <!-- corses singel left -->
+                    
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-6">
+                            <div class="course-features mt-30">
+                               <h4>Course Features </h4>
+                                <ul>
+                                    <li><i class="fa fa-clock-o"></i>Duaration : <span>{{course_time_duration.sum}}</span></li>
+                                    <li><i class="fa fa-clone"></i>Leactures : <span>{{lessons.count}}</span></li>
+                                    
+                                    
+                                    <li><i class="fa fa-clone"></i>Language : <span>{{course.language}}</span></li>
+                                    <li><i class="fa fa-clone"></i>Skill Level : <span>{{course.level.name}}</span></li>
+                                    <li><i class="fa fa-beer"></i>Deadline :  <span>{{course.deadline}}</span></li>
+                                    <li><i class="fa fa-user-o"></i>Certificates :  <span>{{course.Certificate}}</span></li>
+                                    <li><i class="fa fa-user-o"></i>Entrolled Students :  <span>{{course.usercourse_set.all.count}} </span></li>
+                                </ul>
+                                {% comment %} <div class="price-button pt-10">
+                                    <span>Price : <b>$25</b></span>
+                                    <a href="#" class="main-btn">Enroll Now</a>
+                                </div>  {% endcomment %}
+                                <div class="price-button pt-10">
+                                    {% if course.price == 0 %}
+                                        <span>Price : <b>Free</b></span>
+                                    {% else %}
+                                        <span>Price : 
+                                            <del>₹ {{ course.price }}</del> 
+                                            <b>₹ </b>
+                                        </span>
+                                    {% endif %}
+                                
+                                    
+                                    {% if check_enroll is None %}
+                                        {% if user.is_authenticated %}
+                                            <a href="/checkout/{{ course.id }}" class="main-btn">Enroll Now</a>
+                                        {% else %}
+                                            <a href="/register_view/" class="main-btn">Enroll Now</a> <!-- Redirect to registration -->
+                                        {% endif %}
+                                    {% else %}
+                                        <button class="main-btn" disabled>Already Enrolled</button>
+                                    {% endif %}
+                                </div>
+                                {% comment %} <div class="price-button pt-10">
+                                    {% if course.price == 0 %}
+                                        <span>Price : <b>Free</b></span>
+                                    {% else %}
+                                        <span>Price : 
+                                            <del>₹ {{ course.price }}</del> 
+                                            <b>₹ {% discount_calculation course.price course.discount %}</b>
+                                        </span>
+                                    {% endif %}
+                                    <a href="#" class="main-btn">Enroll Now</a>
+                                </div> {% endcomment %}
+                            </div> <!-- course features -->
+                        </div>
+                        <div class="col-lg-12 col-md-6">
+                            <div class="You-makelike mt-30">
+                                <h4>You make like </h4> 
+                                <div class="singel-makelike mt-20">
+                                    <div class="image">
+                                        <img src="{% static 'images/your-make/y-1.jpg' %}" alt="Image">
+                                    </div>
+                                    <div class="cont">
+                                        <a href="#"><h4>Introduction to machine languages</h4></a>
+                                        <ul>
+                                            <li><a href="#"><i class="fa fa-user"></i>31</a></li>
+                                            <li>$50</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="singel-makelike mt-20">
+                                    <div class="image">
+                                        <img src="{% static 'images/your-make/y-1.jpg' %}" alt="Image">
+                                    </div>
+                                    <div class="cont">
+                                        <a href="#"><h4>How to build a basis game with java </h4></a>
+                                        <ul>
+                                            <li><a href="#"><i class="fa fa-user"></i>31</a></li>
+                                            <li>$50</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="singel-makelike mt-20">
+                                    <div class="image">
+                                        <img src="{% static 'images/your-make/y-1.jpg' %}" alt="Image">
+                                    </div>
+                                    <div class="cont">
+                                        <a href="#"><h4>Basic accounting from primary</h4></a>
+                                        <ul>
+                                            <li><a href="#"><i class="fa fa-user"></i>31</a></li>
+                                            <li>$50</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- row -->
+            <div class="row">
+                <div class="col-lg-8">
+                    {% comment %} <div class="releted-courses pt-95">
+                        <div class="title">
+                            <h3>Releted Courses</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="singel-course mt-30">
+                                    <div class="thum">
+                                        <div class="image">
+                                            <img src="{% static 'images/course/cu-2.jpg' %}" alt="Course">
+                                        </div>
+                                        <div class="price">
+                                            <span>Free</span>
+                                        </div>
+                                    </div>
+                                    <div class="cont">
+                                        <ul>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                        </ul>
+                                        <span>(20 Reviws)</span>
+                                        <a href="courses-singel.html"><h4>Learn basis javascirpt from start for beginner</h4></a>
+                                        <div class="course-teacher">
+                                            <div class="thum">
+                                                <a href="#"><img src="{% static 'images/course/teacher/t-2.jpg' %}" alt="teacher"></a>
+                                            </div>
+                                            <div class="name">
+                                                <a href="#"><h6>Mark anthem</h6></a>
+                                            </div>
+                                            <div class="admin">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-user"></i><span>31</span></a></li>
+                                                    <li><a href="#"><i class="fa fa-heart"></i><span>10</span></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="col-md-6">
+                                <div class="singel-course mt-30">
+                                    <div class="thum">
+                                        <div class="image">
+                                            <img src="{% static 'images/course/cu-1.jpg' %}" alt="Course">
+                                        </div>
+                                        <div class="price">
+                                            <span>Free</span>
+                                        </div>
+                                    </div>
+                                    <div class="cont">
+                                        <ul>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                        </ul>
+                                        <span>(20 Reviws)</span>
+                                        <a href="courses-singel.html"><h4>Learn basis javascirpt from start for beginner</h4></a>
+                                        <div class="course-teacher">
+                                            <div class="thum">
+                                                <a href="#"><img src="{% static 'images/course/teacher/t-3.jpg' %}" alt="teacher"></a>
+                                            </div>
+                                            <div class="name">
+                                                <a href="#"><h6>Mark anthem</h6></a>
+                                            </div>
+                                            <div class="admin">
+                                                <ul>
+                                                    <li><a href="#"><i class="fa fa-user"></i><span>31</span></a></li>
+                                                    <li><a href="#"><i class="fa fa-heart"></i><span>10</span></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div> 
+                    </div>  {% endcomment %}
+                </div>
+            </div> 
+        </div> <!-- container -->
+    </section>
+    
+    <!--====== COURSES SINGEl PART ENDS ======-->
+   
+    <!--====== FOOTER PART START ======-->
+    {% endblock %}

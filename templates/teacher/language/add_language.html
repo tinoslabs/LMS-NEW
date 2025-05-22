@@ -1,0 +1,40 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+<!-- / Navbar -->
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Language</h4>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <h5 class="card-header">Add Language</h5>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'add_language' %}">
+                            {% csrf_token %}
+                            <div>
+                                <label for="nameInput" class="form-label">Language</label>
+                                <input type="text" class="form-control" id="nameInput" placeholder="Enter category name"
+                                    name="language" />
+                                <div id="nameHelp" class="form-text">
+                                    Enter the name of the level you wish to add.
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+
+    {% endblock %}

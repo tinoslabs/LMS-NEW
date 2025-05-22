@@ -1,0 +1,100 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Table /</span> Quiz Result</h4>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    
+                    <div class="row align-items-center flex-nowrap">
+                        <div class="col">  
+                            <h5 class="card-header">Quiz Result - <span class="fw-bold fs-4">{{ quiz_results.0.quiz.title }}</span></h5>  <!-- used select_related  -->
+                        </div>
+                        <!-- <div class="col-auto me-4">
+                            <a href="{% url 'create_quiz' %}" class="btn btn-primary">Add New Quiz</a>
+                        </div> -->
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Student Name</th>
+                                        <th>Percentage</th>
+                                        <th>Submitted On</th>
+                                        <th>Status</th>
+                                        <th>Certificate</th>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    {% for quiz_result in quiz_results %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ quiz_result.user.username }}</td>
+                                        <td>
+                                            <div class="badge bg-label-primary">
+                                                {{ quiz_result.score_percentage }}%
+                                            </div>
+                                        </td>
+                                        <td>{{ quiz_result.date_taken|date:"F j, Y" }}</td>
+                                        <td>
+                                            {% if quiz_result.certificate.verified %}
+                                                <span class="btn btn-secondary btn-sm" disabled>Verified</span>
+                                            {% else %}
+                                                <a href="{% url 'verify_result' quiz_result.id %}" class="btn btn-warning btn-sm">Verification Pending</a>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if quiz_result.certificate.uploaded %}
+                                                <span class="btn btn-secondary btn-sm" disabled>Certificate</span>
+                                            {% elif quiz_result.certificate.verified %}
+                                                <span class="btn btn-secondary btn-sm" disabled>Certificate Not Uploaded</span>
+                                            {% else %}
+                                                <span class="btn btn-secondary btn-sm disabled">Verification Pending</span>
+                                            {% endif %}
+                                        </td>
+                                        
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="6">Quiz result are not available</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!-- / Content -->
+        </div>
+    </div>
+</div>
+<style>
+    .modal-body object,
+    .modal-body img {
+        max-width: 100%;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .badge {
+        font-size: 0.9em;
+        padding: 0.5em 0.7em;
+    }
+</style>
+{% endblock %}

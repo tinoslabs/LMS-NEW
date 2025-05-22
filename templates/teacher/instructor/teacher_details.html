@@ -1,0 +1,101 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+          <!-- Content wrapper -->
+              <!-- Bootstrap Dark Table -->
+              <div class="card">
+                <h5 class="card-header">Table Dark</h5>
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-dark">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                {% comment %} <th>Image</th> {% endcomment %}
+                                <th>Name</th>
+                                <th>Designation</th>
+                                <th>About</th>
+                                <th>Profile</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            {% for author in instructor %}
+                            <tr>
+                                <td><strong>{{ author.user.username }}</strong></td>
+                                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ author.user.first_name }}</strong></td>
+                                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ author.designation }}</strong></td>
+                                <td>
+                                    {% if author.about_author|length > 53 %}
+                                        {{ author.about_author|slice:":53" }}... 
+                                    {% else %}
+                                        {{ author.about_author }} 
+                                    {% endif %}
+                                </td>
+                                {% comment %} <td>
+                                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="{{ author.name }}">
+                                            {% if author.author_profile %}
+                                                <img src="{{ author.author_profile.url }}" alt="Avatar" class="rounded-circle" />
+                                            {% else %}
+                                                <img src="{% static 'path/to/default-avatar.png' %}" alt="Avatar" class="rounded-circle" />
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </td> {% endcomment %}
+                                <td>
+                                  <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="{{ author.name }}">
+                                          {% if author.user.profile_image %}
+                                              <img src="{{ author.user.profile_image.url }}" alt="Avatar" class="rounded-circle" />
+                                          {% else %}
+                                              <img src="{% static 'path/to/default-avatar.png' %}" alt="Avatar" class="rounded-circle" />
+                                          {% endif %}
+                                      </li>
+                                  </ul>
+                              </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{% url 'update_instructor' %}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                            <a class="dropdown-item" href="{% url 'delete_instructor' %}"><i class="bx bx-trash-alt me-1"></i> Delete</a>
+
+                                            <!-- {% comment %} <form method="post" action="{% url 'delete_author' author.pk %}" style="display:inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="dropdown-item btn btn-link" style="text-decoration: none;">
+                                                    <i class="bx bx-trash me-1"></i> Delete
+                                                </button>
+                                            </form> {% endcomment %} -->
+
+                                            <!-- <form method="post" action="" style="display:inline;">
+                                              {% csrf_token %}
+                                              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form> -->
+                          
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">No authors available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table> <!-- Close the table properly here -->
+                </div> <!-- Close the table-responsive div -->
+            </div> <!-- Close the card div -->
+
+              <!--/ Bootstrap Dark Table -->
+
+             
+
+              <!-- Bootstrap Table with Header - Dark -->
+             
+
+             
+            {% endblock %}

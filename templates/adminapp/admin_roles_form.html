@@ -1,0 +1,65 @@
+
+<div class="modal-body">
+    <!-- Section Title -->
+    <h2 class="section-title">Assign General Permission to Roles</h2>
+
+            <!-- Form for Permission Assignment -->
+            <form id='admin_role_form' method="POST" action="#">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">
+                                <input type="checkbox" id="select-all">
+                            </th>
+                            <th style="width: 25%;">MODULE</th>
+                            <th style="width: 70%;">PERMISSIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="checkbox-container">
+                                <input type="checkbox" class="module-checkbox" name="module" value="profile">
+                            </td>
+                            <td>Profile</td>
+                            <td class="permission-column">
+                                <div class="permission-item">
+                                    <input type="checkbox" class="permission-checkbox" name="profile_permissions" value="manage"> <label>Manage</label>
+                                </div>
+                                <div class="permission-item">
+                                    <input type="checkbox" class="permission-checkbox" name="profile_permissions" value="create"> <label>Create</label>
+                                </div>
+                                <div class="permission-item">
+                                    <input type="checkbox" class="permission-checkbox" name="profile_permissions" value="edit"> <label>Edit</label>
+                                </div>
+                                <div class="permission-item">
+                                    <input type="checkbox" class="permission-checkbox" name="profile_permissions" value="delete"> <label>Delete</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-container">
+                                <input type="checkbox" class="module-checkbox" name="module" value="admin">
+                            </td>
+                            <td>Admin</td>
+                            <td class="permission-column">
+                                <div class="permission-item">
+                                    <input type="checkbox" class="permission-checkbox" name="admin_permissions" value="manage"> <label>Manage</label>
+                                </div>
+                                <div class="permission-item">
+                                    <input type="checkbox" class="permission-checkbox" name="admin_permissions" value="create"> <label>Create</label>
+                                </div>
+                                <div class="permission-item">
+                                    <input type="checkbox" class="permission-checkbox" name="admin_permissions" value="edit"> <label>Edit</label>
+                                </div>
+                                <div class="permission-item">
+                                    <input type="checkbox" class="permission-checkbox" name="admin_permissions" value="delete"> <label>Delete</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn">Assign Permissions</button>
+</form>

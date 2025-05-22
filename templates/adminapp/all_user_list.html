@@ -1,0 +1,306 @@
+{% extends "dashboard/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Custom Styles -->
+<style>
+
+    .invalid-feedback {
+        display: block;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 0.875em;
+        color: #dc3545;
+    }
+
+    .is-invalid {
+        border-color: #dc3545;
+    }
+
+    .is-invalid:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+    }
+
+    /* Ensure uniform padding for header, filter, and search */
+    .border-bottom {
+        border-bottom: 1px solid #dee2e6 !important;
+    }
+
+
+
+    /* Ensure buttons and inputs align properly */
+    .form-select,
+    .form-control,
+    .btn {
+        min-height: 38px;
+        /* Ensures uniform height */
+    }
+
+    /* Improve spacing for better alignment */
+    .px-4 {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+</style>
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Table / </span>Users List</h4>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <!-- Header & Controls -->
+                    <div class="row align-items-center px-4 py-3 g-2 border-bottom">
+                        {% comment %} {% include 'components/msg.html' %} {% endcomment %}
+
+                        <!-- Title -->
+                        <div class="col-12 col-md-auto">
+                            <h5 class="m-0">Users List</h5>
+                        </div>
+
+                        <!-- Filters & Actions (Right-Aligned) -->
+                        <div class="col-12 col-md ms-auto d-flex flex-wrap justify-content-md-end gap-2">
+                            <!-- Role Filter -->
+                            <div class="col-12 col-sm-auto">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-primary dropdown-toggle w-100 text-start" type="button" id="roleFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bx bx-filter-alt"></i> All Roles
+                                    </button>
+                                    <ul class="dropdown-menu w-100" aria-labelledby="roleFilterDropdown">
+                                        <li><a class="dropdown-item active" href="#" data-value=""><i class="bx bx-group"></i> All Roles</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="Admin"><i class="bx bx-user-check"></i> Admin</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="Instructor"><i class="bx bx-chalkboard"></i> Instructor</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="Student"><i class="bx bx-book"></i> Student</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="Superuser"><i class="bx bx-shield"></i> Superuser</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Search Bar -->
+                            <div class="col-12 col-sm-auto">
+                                <input type="text" id="searchUser" class="form-control" placeholder="Search Here">
+                            </div>
+
+                            <!-- Add User Button -->
+                            <div class="col-12 col-sm-auto">
+                                <button class="btn btn-primary w-100 w-sm-auto" data-bs-toggle="modal"
+                                    data-bs-target="#userModal">Add User</button>
+                            </div>
+
+                            <div class="col-12 col-sm-auto">
+                                <a href="{% url 'roles' %}" class="btn btn-primary w-100 w-sm-auto" data-bs-toggle="" 
+                                data-bs-target="#userModal">Roles</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="card-body px-4">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table mb-0" id="userTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>U/ID</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="username">{{ user.username }}</td>
+                                        <td class="email">{{ user.email }}</td>
+                                        <td class="email">{{ user.user_key }}</td>
+                                        <td class="role">
+                                            <span class="badge bg-label-primary">{{ user.roles }}</span>
+                                        </td>
+                                        <td>
+                                            {% if user.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <!-- Edit Action -->
+                                                    <a class="dropdown-item edit-user" href="javascript:void(0);"
+                                                        data-id="{{ user.id }}" 
+                                                        data-username="{{ user.username }}" 
+                                                        data-email="{{ user.email }}" 
+                                                        data-role="{{ user.get_roles_display }}" 
+                                                        data-status="{{ user.is_active }}"
+                                                        data-bs-toggle="modal" data-bs-target="#userModal">
+                                                        <i class="bx bx-edit-alt me-1"></i> Edit
+                                                    </a>
+                                                    <!-- Delete Action -->
+                                                    <a class="dropdown-item delete-user" href="javascript:void(0);" data-id="{{ user.id }}">
+                                                        <i class="bx bx-trash me-1"></i> Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="6" class="text-center">No users found.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <form id="userForm" method="post"
+                 action="{% url 'admin_register' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="userId" name="user_id">
+                    
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" name="username"
+                        class="form-control" required>
+                    </div>
+                
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email"
+                         class="form-control" required>
+                    </div>
+                
+                    <!-- Name Fields -->
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" id="first_name" name="first_name"
+                        class="form-control" required>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" id="last_name" 
+                        name="last_name" class="form-control" required>
+                    </div>
+                
+                    <!-- Contact Information -->
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone_number" 
+                        name="phone_number" class="form-control" required>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea id="address" 
+                        name="address" class="form-control" required></textarea>
+                    </div>
+                
+                    <!-- Password (Only for new users) -->
+                    <div class="mb-3" id="passwordFields">
+                        <label for="password1" class="form-label">Password</label>
+                        <input type="password" id="password1" name="password1" class="form-control">
+                        <label for="password2" class="form-label">Confirm Password</label>
+                        <input type="password" id="password2" name="password2" class="form-control">
+                    </div>
+                
+                    <!-- Role -->
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select id="role" name="role" class="form-select" required>
+                            <option value="" disabled selected>Select Role</option>
+                            <option value="student">Student</option>
+                            <option value="teacher">Instructor</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    
+                
+                    <!-- Instructor Fields (Hidden initially) -->
+                    <div id="instructorFields" style="display: none;">
+                        <div class="mb-3">
+                            <label for="designation" class="form-label">Designation</label>
+                            <input type="text" id="designation" name="designation" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="about_author" class="form-label">About</label>
+                            <textarea id="about_author" name="about_author" class="form-control"></textarea>
+                        </div>
+
+                        <!-- Approval -->
+                        <div class="mb-3" id="approvalField">
+                            <label for="is_approved" class="form-label">Approval Status</label>
+                            <select id="is_approved" name="is_approved" class="form-select">
+                                <option value="true">Approved</option>
+                                <option value="false">Not Approved</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                    <!-- Active -->
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Active Status</label>
+                        <select id="status" name="status" class="form-select">
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+<!-- JavaScript -->
+{% comment %} <script src="{% static 'js/user_list_admin.js' %}"></script> {% endcomment %}
+
+<script>
+    document.getElementById('userForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        await fetch(this.action, { method: 'POST', body: formData });
+        window.location.reload();
+    });
+</script>
+
+
+{% endblock %}

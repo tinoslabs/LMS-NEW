@@ -1,0 +1,313 @@
+{% extends "dashboard/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Add padding to the body to avoid overlapping with the navbar */
+        body {
+            padding-top: 80px; /* Adjust this value based on your navbar height */
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-container .form-control {
+            flex: 1;
+        }
+
+        .search-wrapper {
+            display: flex;
+            flex: 1;
+            gap: 5px;
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            background-color:  #696cff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .search-btn:hover {
+            background-color:  #696cff;
+        }
+
+        .nav-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            list-style: none;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            margin-right: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            border: none;
+            background-color: transparent;
+            color:   #696cff;
+        }
+
+        .nav-item.active {
+            background-color: #696cff;
+            color: white;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .module-column {
+            width: 30%;
+        }
+
+        .permission-column {
+            width: 70%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .permission-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color:  #696cff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .submit-btn:hover {
+            background-color: #696cff;
+        }
+        
+        /* Optional: Improve spacing between checkboxes */
+        .form-check {
+                margin-bottom: 8px;
+            }
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Table / </span>Users Roles</h4>
+
+        <!-- Search & Select Fields -->
+        <div class="search-container">
+            <!-- Search and Select Role Dropdown -->
+            <select id="role-dropdown" class="form-control">
+                <option value="">Search and select role</option>
+                {% if user %}
+                    <option value="{{user.id}}" selected>{{user.first_name}} {{user.last_name}}</option>
+                {% endif %}
+            </select>
+
+            <!-- Select Role Type Dropdown -->
+            <select id="role-type" class="form-control">
+                <option value="">Select Role Type</option>
+                <option value="admin" {% if user.roles == 'admin' %}selected{% endif %}>Admin</option>
+                <option value="student" {% if user.roles == 'student' %}selected{% endif %}>Student</option>
+                <option value="Teacher" {% if user.roles == 'teacher' %}selected{% endif %}>Teacher</option>
+                <option value="Parent" {% if user.roles == 'Parent' %}selected{% endif %}>Parent</option> 
+                <option value="guest" {% if user.roles == 'guest' %}selected{% endif %}>Guest</option>
+            </select>
+
+            <!-- Search Form -->
+            <form method="GET" action="{% url 'search_and_select' %}" class="search-wrapper">
+                {% csrf_token %}  
+                <input type="text" id="role-search" name="keyword" value="{{ request.GET.keyword }}" class="form-control" placeholder="Search by user key">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-item" data-role="admin" data-tab="staff">Admin</button>
+            <button class="nav-item" data-role="student" data-tab="crm">Student</button>
+            <button class="nav-item" data-role="teacher" data-tab="project">Teacher</button>
+            <button class="nav-item" data-role="guest" data-tab="hrm">Guest</button>
+            <button class="nav-item" data-role="parent" data-tab="account">Parent</button>
+        </div>
+
+        {% if user %}
+        {% if user.roles == 'admin' %} {% include "adminapp/admin_roles_form.html" %} {% endif %}
+        {% if user.roles == 'student' %} {% include "student/student_roles_form.html" %} {% endif %}
+        {% if user.roles|lower == 'teacher' %} {% include "teacher/teacher_roles_form.html" %} {% endif %}
+        {% if user.roles|lower == 'parent' %}{% include "parent/parent_roles_form.html" %}{% endif %}
+        {% if user.roles == 'guest' %} {% include "guest/guest_roles_form.html" %} {% endif %}
+        {% else %}
+        <p>No user found. Please search by unique key.</p>
+        {% endif %}
+
+    </div>
+
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+        // [Keep your existing tab switching code here...]
+
+        // Enhanced checkbox functionality
+        const selectAllCheckbox = document.getElementById('select-all');
+        const moduleCheckboxes = document.querySelectorAll('.module-checkbox');
+        const permissionCheckboxes = document.querySelectorAll('.permission-checkbox');
+
+        // Handle "Select All" checkbox
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function() {
+                const isChecked = this.checked;
+                moduleCheckboxes.forEach(moduleCheckbox => {
+                    moduleCheckbox.checked = isChecked;
+                    // Update all permissions in this module
+                    const row = moduleCheckbox.closest('tr');
+                    if (row) {
+                        row.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+                            checkbox.checked = isChecked;
+                        });
+                    }
+                });
+            });
+        }
+
+        // Handle module checkbox clicks
+        moduleCheckboxes.forEach(moduleCheckbox => {
+            moduleCheckbox.addEventListener('change', function() {
+                const isChecked = this.checked;
+                // Update all permissions in this module
+                const row = this.closest('tr');
+                if (row) {
+                    row.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+                        checkbox.checked = isChecked;
+                    });
+                }
+                updateSelectAllCheckbox();
+            });
+        });
+
+        // Handle individual permission checkbox clicks
+        permissionCheckboxes.forEach(permissionCheckbox => {
+            permissionCheckbox.addEventListener('change', function() {
+                updateModuleCheckboxState(this);
+                updateSelectAllCheckbox();
+            });
+        });
+
+        // Update module checkbox state based on its permissions
+        function updateModuleCheckboxState(permissionCheckbox) {
+            const row = permissionCheckbox.closest('tr');
+            if (!row) return;
+            
+            const moduleCheckbox = row.querySelector('.module-checkbox');
+            const permissions = row.querySelectorAll('.permission-checkbox');
+            const checkedCount = Array.from(permissions).filter(p => p.checked).length;
+            
+            if (checkedCount === 0) {
+                moduleCheckbox.checked = false;
+                moduleCheckbox.indeterminate = false;
+            } else if (checkedCount === permissions.length) {
+                moduleCheckbox.checked = true;
+                moduleCheckbox.indeterminate = false;
+            } else {
+                moduleCheckbox.checked = false;
+                moduleCheckbox.indeterminate = true;
+            }
+        }
+
+        // Update "Select All" checkbox based on module states
+        function updateSelectAllCheckbox() {
+            if (!selectAllCheckbox || !moduleCheckboxes.length) return;
+            
+            const allChecked = Array.from(moduleCheckboxes).every(cb => cb.checked && !cb.indeterminate);
+            const anyChecked = Array.from(moduleCheckboxes).some(cb => cb.checked || cb.indeterminate);
+            
+            selectAllCheckbox.checked = allChecked;
+            selectAllCheckbox.indeterminate = !allChecked && anyChecked;
+        }
+
+        // Initialize all checkbox states on page load
+        function initializeCheckboxes() {
+            permissionCheckboxes.forEach(pb => updateModuleCheckboxState(pb));
+            updateSelectAllCheckbox();
+        }
+
+        initializeCheckboxes();
+    });
+    </script>
+</body>
+
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+  <!-- Content -->
+
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tables /</span> What You Learn List</h4>
+
+    <!-- Bordered Table -->
+    <div class="card">
+
+
+      <div class="row align-items-center flex-nowrap">
+        <div class="col">
+          <h5 class="card-header">What You Learn List</h5>
+        </div>
+        <div class="col-auto me-4">
+          <a href="{% url 'add_what_u_learn' %}" class="btn btn-primary">Add New Point</a>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive text-nowrap">
+
+          <table class="table table-bordered table-dark">
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Points Learned</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for entry in what_u_learn_entries %}
+              <tr>
+                <td>{{ entry.course.title }}</td> <!-- Assuming Course has a 'title' field -->
+                <td>{{ entry.points }}</td>
+                <td>
+                  <a href="{% url 'update_what_u_learn' entry.id %}" class="btn btn-warning btn-sm">Edit</a>
+                  <form method="POST" action="{% url 'delete_what_u_learn' entry.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
+              </tr>
+
+              {% empty %}
+              <tr>
+                <td colspan="15" class="text-center">No Points added.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Bordered Table -->
+
+
+  {% endblock %}

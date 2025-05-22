@@ -1,0 +1,91 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Author</h4>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <h5 class="card-header">Instructor Form</h5>
+                    <div class="card-body">
+
+                        {% comment %} <form method="post" enctype="multipart/form-data" action="{% url 'add_author' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Instructor Profile Image</label>
+                                <input class="form-control" type="file" id="formFile" name="author_profile" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nameInput" class="form-label">Instructor Name</label>
+                                <input type="text" class="form-control" id="nameInput" placeholder="Enter author name"
+                                    name="name" required />
+                                <div id="nameHelp" class="form-text">
+                                    Enter the name of the author.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nameInput" class="form-label">Designation</label>
+                                <input type="text" class="form-control" id="nameInput" placeholder="Enter author name"
+                                    name="designation" required />
+                                <div id="nameHelp" class="form-text">
+                                    Enter Your Possition.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="aboutAuthorInput" class="form-label">About Author</label>
+                                <textarea class="form-control" id="aboutAuthorInput"
+                                    placeholder="Enter author description" name="about_author" rows="4"
+                                    required></textarea>
+                                <div id="aboutAuthorHelp" class="form-text">
+                                    Provide a short bio or description of the author.
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form> {% endcomment %}
+
+                        
+                        <form method="post" enctype="multipart/form-data" action="{% url 'create_instructor' %}">
+                            {% csrf_token %}
+
+
+                            <div class="mb-3">
+                                <label for="designation" class="form-label">Designation</label>
+                                <input type="text" class="form-control" id="designation" placeholder="Enter designation"
+                                    name="designation" />
+                                <div id="designationHelp" class="form-text">Enter your position.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="aboutAuthor" class="form-label">About Author</label>
+                                <textarea class="form-control" id="aboutAuthor"
+                                    placeholder="Enter instructor description" name="about_author" rows="4"
+                                    required></textarea>
+                                <div id="aboutAuthorHelp" class="form-text">Provide a short bio or description of the
+                                    instructor.</div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    
+<!-- / Content -->
+{% endblock %}

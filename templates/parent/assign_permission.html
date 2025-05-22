@@ -1,0 +1,153 @@
+{% extends "dashboard/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+        }
+        
+        .button-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background-color: #79c8e4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #5ab0cc;
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .accountant-label {
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .edit-btn {
+            background-color: #4eccb3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .delete-btn {
+            background-color: #ff5b77;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .button-grid {
+                gap: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .button-grid {
+                justify-content: center;
+            }
+            
+            .btn {
+                flex: 0 0 calc(50% - 8px);
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <p>permissions assigned {{user.user.first_name}} {{user.user.last_name}}</p>
+    <div class="container">
+        <div class="button-grid">
+            {% if permissions %}
+                {% if permissions.can_manage %}
+                <button class="btn">profile Can Manage</button>
+                {% endif %}
+                {% if permissions.can_create %}
+                <button class="btn">profile Can create</button>
+                {% endif %}
+                {% if permissions.can_edit %}
+                <button class="btn">profile Can edit</button>
+                {% endif %}
+                {% if permissions.can_delete %}
+                <button class="btn">profile Can delete</button>
+                {% endif %}
+            {% else %}
+            <p>No permissions assigned yet.</p>
+            {% endif %}
+        </div>
+        
+        <div class="footer">
+            <div class="accountant-label">accountant</div>
+            <div class="action-buttons">
+                <button class="edit-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.71 7.04C21.1 6.65 21.1 6.08 20.71 5.69L18.31 3.29C17.92 2.9 17.35 2.9 16.96 3.29L15.12 5.12L18.87 8.87L20.71 7.04ZM3 17.25V21H6.75L17.81 9.93L14.06 6.18L3 17.25Z" fill="white"/>
+                    </svg>
+                </button>
+                <button class="delete-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM19 4H15.5L14.5 3H9.5L8.5 4H5V6H19V4Z" fill="white"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}
