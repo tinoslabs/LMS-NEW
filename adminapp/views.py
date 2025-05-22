@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages, auth
 from django.core.mail import send_mail
 from django.conf import settings
@@ -10,6 +10,7 @@ from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
 from.decorators import allowed_roles
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import user_passes_test
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
@@ -19,10 +20,14 @@ from django.contrib import messages
 from .models import Account
 from .forms import AdminUserForm
 
-from student.models import Student
+from student.models import Student,Categoriestheory
 from  parent.models import Parent 
 from guest.models import Guest
-from teacher.models import Teacher
+from teacher.models import Teacher,Categories,Course,CourseResource
+from django.db.models import Count
+
+
+
 
 def generate_otp():
     return str(random.randint(100000, 999999))  # 6-digit OTP
@@ -356,3 +361,64 @@ def admin_register(request):
     return render(request, 'admin_registration.html')
 
 
+def contact_us(request):
+    category=Categories.objects.all().order_by('id')[0:6]
+    return render(request,'base/contact-us.html',{'category':category})
+
+def about_us(request):
+    category=Categories.objects.all().order_by('id')[0:6]
+    return render(request,'base/about_us.html',{'category':category})
+
+def course_watch(request):
+    category=Categories.objects.all().order_by('id')[0:6]
+    return render(request,'student/course-watch.html',{'category':category})
+
+def get_top_instructors():
+    top_instructors = (
+        Account.objects.filter(roles='Teacher')
+        .annotate(course_count=Count('instructor__course'))
+        .order_by('-course_count')[:4]
+    )
+    return top_instructors
+
+
+def index(request):
+    category=Categories.objects.all().order_by('id')[0:6]
+    theory=Categoriestheory.objects.all().order_by('id')[0:6]
+    course=Course.objects.filter(status='PUBLISH').order_by('-id')
+    courser=CourseResource.get_all_category(CourseResource)
+    
+    top_teachers = get_top_instructors
+
+    context={
+        'category':category,
+        'course':course,
+        'theory':theory,
+        'courser':courser, 
+        'top_teachers':top_teachers,
+    }
+    return render(request,'index.html',context)
+
+
+
+@user_passes_test(lambda u: u.is_superadmin)  
+def admin_approval_view(request):
+    # Fetch all instructors
+    instructors = Account.objects.filter(roles='Teacher', is_approved=False)
+
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        action = request.POST.get('action')  # 'approve' or 'reject'
+        user = get_object_or_404(User, id=user_id)
+
+        if action == 'approve':
+            user.is_approved = True
+            user.save()
+            messages.success(request, f'{user.username} has been approved.')
+        elif action == 'reject':
+            # Optional: Handle rejection (you can also delete or deactivate the user)
+            messages.error(request, f'{user.username} has been rejected.')
+
+        return redirect('admin_approval')
+
+    return render(request, 'adminapp/admin_approval.html', {'instructors': instructors})

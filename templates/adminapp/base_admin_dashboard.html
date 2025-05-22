@@ -1,6 +1,5 @@
-{% load static %}
 <!DOCTYPE html>
-
+{% load static %}
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
   data-assets-path="{% static 'admin' %}" data-template="vertical-menu-template-free">
@@ -50,7 +49,7 @@
 
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-          <a href="#" class="app-brand-link">
+          <a href="{% url 'index' %}" class="app-brand-link">
             <span class="app-brand-logo demo">
               <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -108,39 +107,30 @@
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
           <li class="menu-item active">
-            <a href="{% url 'student_dashboard' %}" class="menu-link">
+            <a href="{% url 'admin_dashboard' %}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-home-circle"></i>
               <div data-i18n="Analytics">Dashboard</div>
             </a>
           </li>
 
+          <!-- Layouts -->
 
           <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Profile</span>
+            <span class="menu-header-text">Pages</span>
           </li>
           <li class="menu-item">
-
             <a href="{% url 'profile_view' %}" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-dock-top"></i>
               <div data-i18n="Account Settings">Account Settings</div>
             </a>
-
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="{% url 'student_profile' %}" class="menu-link">
+                <a href="{% url 'profile_view' %}" class="menu-link">
                   <div data-i18n="Account">Account</div>
                 </a>
               </li>
-            </ul>
 
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Account">Registered Courses</div>
-                </a>
-              </li>
             </ul>
-
           </li>
 
           <li class="menu-item">
@@ -151,11 +141,34 @@
             <ul class="menu-sub">
 
               <li class="menu-item">
-                <a href="#" class="menu-link" target="_blank">
-                  <div data-i18n="Basic">Change Password</div>
+                <a href="{% url 'user' %}" class="menu-link" target="_blank">
+                  <div data-i18n="Basic">Users</div>
                 </a>
               </li>
 
+              <li class="menu-item">
+                <a href="{% url 'all_users_list' %}" class="menu-link">
+                  <div data-i18n="Account">Users List</div>
+                </a>
+              </li>
+
+              <li class="menu-item">
+                <a href="{% url 'login_view' %}" class="menu-link" target="_blank">
+                  <div data-i18n="">User Login</div>
+                </a>
+              </li>
+
+              <li class="menu-item">
+                <a href="" class="menu-link" target="_blank">
+                  <div data-i18n="Basic">User Register</div>
+                </a>
+              </li>
+
+              {% comment %} <li class="menu-item">
+                <a href="{% url 'change_password' %}" class="menu-link" target="_blank">
+                  <div data-i18n="Basic">Change Password</div>
+                </a>
+              </li> {% endcomment %}
               <li class="menu-item">
                 <a href="#" class="menu-link" target="_blank">
                   <div data-i18n="Basic">Forgot Password</div>
@@ -165,69 +178,81 @@
           </li>
 
 
-
           <!-- Components -->
           <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
           <!-- Cards -->
           <li class="menu-item">
-            <a href="{% url 'my_course' %}" class="menu-link">
+            <a href="{% url 'admin_approval' %}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-collection"></i>
-              <div data-i18n="Basic">My Courses</div>
+              <div data-i18n="Basic">Lecture Approval</div>
             </a>
           </li>
-
-          <li class="menu-item">
-            <a href="{% url 'quiz_selection' %}" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-collection"></i>
-              <div data-i18n="Basic">Online Quiz</div>
-            </a>
-          </li>
-
-          <li class="menu-item">
-            <a href="{% url 'quiz_result_all' %}" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-collection"></i>
-              <div data-i18n="Basic">View Results</div>
-            </a>
-          </li>
-
-          <li class="menu-item">
-            <a href="{% url 'all_certificates' %}" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-collection"></i>
-              <div data-i18n="Basic">My Certificates</div>
-            </a>
-          </li>
-
           <!-- User interface -->
+          <li class="menu-item">
+            <a href="{% url 'add_category' %}" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-copy"></i>
+              <div data-i18n="Extended UI">Course Category</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="{% url 'add_category' %}" class="menu-link">
+                  <div data-i18n="Perfect Scrollbar">Add Category</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="{% url 'category_list' %}" class="menu-link">
+                  <div data-i18n="Perfect Scrollbar">Category List</div>
+                </a>
+              </li>
 
+            </ul>
+          </li>
 
           <!-- Extended components -->
-          {% comment %} <li class="menu-item">
-            <a href="" class="menu-link menu-toggle">
+          <li class="menu-item">
+            <a href="{% url 'instructor_list' %}" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-copy"></i>
               <div data-i18n="Extended UI">Lecture</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="" class="menu-link">
+                <a href="{% url 'instructor_list' %}" class="menu-link">
                   <div data-i18n="Perfect Scrollbar">Lecture List</div>
                 </a>
               </li>
 
             </ul>
-          </li> {% endcomment %}
+          </li>
+
+          <li class="menu-item">
+            <a href="{% url 'student_list' %}" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-copy"></i>
+              <div data-i18n="Extended UI">Student</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="{% url 'student_list' %}" class="menu-link">
+                  <div data-i18n="Perfect Scrollbar">Student List</div>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="menu-item">
+            <a href="{% url 'verified_results' %}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-crown"></i>
+              <div data-i18n="Boxicons">Certificate</div>
+            </a>
+          </li>
 
 
-
-
-          {% comment %} <li class="menu-item">
-            <a href="" class="menu-link">
+          <li class="menu-item">
+            <a href="{% url 'all_courses' %}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-crown"></i>
               <div data-i18n="Boxicons">All Programs</div>
             </a>
-          </li> {% endcomment %}
-
-
-
+          </li>
         </ul>
       </aside>
       <!-- / Menu -->
@@ -259,8 +284,7 @@
             <ul class="navbar-nav flex-row align-items-center ms-auto">
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3">
-                <a class="github-button" href="#"
-                  data-icon="octicon-star" data-size="large" data-show-count="true"
+                <a class="github-button" href="" data-icon="octicon-star" data-size="large" data-show-count="true"
                   aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
               </li>
 
@@ -281,8 +305,8 @@
                           </div>
                         </div>
                         <div class="flex-grow-1">
-                          <span class="fw-semibold d-block">{{ user.username }}</span>
-                          <small class="text-muted">{{ user.role }}</small>
+                          <span class="fw-semibold d-block">{{user.username}}</span>
+                          <small class="text-muted">Admin</small>
                         </div>
                       </div>
                     </a>
@@ -291,7 +315,7 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="{% url 'student_profile' %}">
+                    <a class="dropdown-item" href="#">
                       <i class="bx bx-user me-2"></i>
                       <span class="align-middle">My Profile</span>
                     </a>
@@ -329,49 +353,41 @@
 
         <!-- / Navbar -->
 
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-          <!-- Content -->
+        {% block content %}
+        {% endblock %}
 
-          {% block home_content %}
-          {% endblock %}
-
-
-          <footer class="content-footer footer bg-footer-theme">
-            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-              <div class="mb-2 mb-md-0">
-                ©
-                <script>
-                  document.write(new Date().getFullYear());
-                </script>
-                , made with ❤️ by
-                <a href="#" target="_blank" class="footer-link fw-bolder">Tinos</a>
-              </div>
-              <div>
-                <a href="#" class="footer-link me-4" target="_blank">License</a>
-                <a href="#" target="_blank" class="footer-link me-4">More Themes</a>
-                <a href="#"
-                  target="_blank" class="footer-link me-4">Documentation</a>
-                <a href="#" target="_blank"
-                  class="footer-link me-4">Support</a>
-              </div>
+        <footer class="content-footer footer bg-footer-theme">
+          <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+            <div class="mb-2 mb-md-0">
+              ©
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              , made with ❤️ by
+              <a href="#" target="_blank" class="footer-link fw-bolder">Tinos</a>
             </div>
-          </footer>
-          <!-- / Footer -->
+            <div>
+              <a href="#" class="footer-link me-4" target="_blank">License</a>
+              <a href="#" target="_blank" class="footer-link me-4">More Themes</a>
+              <a href="#" target="_blank" class="footer-link me-4">Documentation</a>
+              <a href="#" target="_blank" class="footer-link me-4">Support</a>
+            </div>
+          </div>
+        </footer>
+        <!-- / Footer -->
 
-          <div class="content-backdrop fade"></div>
-        </div>
-        <!-- Content wrapper -->
+        <div class="content-backdrop fade"></div>
       </div>
-      <!-- / Layout page -->
+      <!-- Content wrapper -->
     </div>
+    <!-- / Layout page -->
+  </div>
 
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
+  <!-- Overlay -->
+  <div class="layout-overlay layout-menu-toggle"></div>
   </div>
   <!-- / Layout wrapper -->
 
-  
 
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->

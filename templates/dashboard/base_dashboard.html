@@ -49,7 +49,7 @@
 
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-          <a href="#" class="app-brand-link">
+          <a href="{% url 'index' %}" class="app-brand-link">
             <span class="app-brand-logo demo">
               <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -119,13 +119,13 @@
             <span class="menu-header-text">Pages</span>
           </li>
           <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
+            <a href="{% url 'profile_view' %}" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-dock-top"></i>
               <div data-i18n="Account Settings">Account Settings</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="#" class="menu-link">
+                <a href="{% url 'profile_view' %}" class="menu-link">
                   <div data-i18n="Account">Account</div>
                 </a>
               </li>
@@ -182,25 +182,25 @@
           <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
           <!-- Cards -->
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{% url 'admin_approval' %}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-collection"></i>
               <div data-i18n="Basic">Lecture Approval</div>
             </a>
           </li>
           <!-- User interface -->
           <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
+            <a href="{% url 'add_category' %}" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-copy"></i>
               <div data-i18n="Extended UI">Course Category</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="#" class="menu-link">
+                <a href="{% url 'add_category' %}" class="menu-link">
                   <div data-i18n="Perfect Scrollbar">Add Category</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="#" class="menu-link">
+                <a href="{% url 'category_list' %}" class="menu-link">
                   <div data-i18n="Perfect Scrollbar">Category List</div>
                 </a>
               </li>
@@ -210,7 +210,7 @@
 
           <!-- Extended components -->
           <li class="menu-item">
-            <a href="3" class="menu-link menu-toggle">
+            <a href="#" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-copy"></i>
               <div data-i18n="Extended UI">Lecture</div>
             </a>
@@ -356,7 +356,7 @@
         {% block content %}
         {% endblock %}
 
-        <footer class="content-footer footer bg-footer-theme fixed-bottom" style="z-index:9999999">
+        <footer class="content-footer footer bg-footer-theme">
           <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
             <div class="mb-2 mb-md-0">
               ©

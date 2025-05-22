@@ -152,11 +152,10 @@
                             <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item">
-                                        <a class="active" href="#">Home</a>
-                                       
+                                        <a class="active" href="{% url 'index' %}">Home</a> 
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#">About us</a>
+                                        <a href="{% url 'about_us' %}">About us</a>
                                     </li>
                                     
                                     <li class="nav-item">
@@ -180,16 +179,16 @@
                                     {% endif %}
                                     
                                     <li class="nav-item">
-                                        <a href="#">Our teachers</a>
+                                        <a href="{% url 'teachers' %}">Our teachers</a>
                                         <ul class="sub-menu">
-                                            <li><a href="#">teachers</a></li>
-                                            <li><a href="teachers-singel.html">teacher Singel</a></li>
+                                            <li><a href="{% url 'teachers' %}">teachers</a></li>
+                                            <li><a href="#">teacher Singel</a></li>
                                         </ul>
                                     </li>
                                     
                                     
                                     <li class="nav-item">
-                                        <a href="#">Contact</a>
+                                        <a href="{% url 'contact_us' %}">Contact</a>
                                         
                                     </li>
                                 </ul>

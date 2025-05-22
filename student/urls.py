@@ -17,6 +17,18 @@ urlpatterns = [
    
    path('enroll/<int:course_id>/', views.enroll_course, name='enroll_course'),
    path('teachers_details/<int:teacher_id>/', views.teachers_details, name='teachers_details'),
+   
+   path('quiz_selection/', views.quiz_selection, name='quiz_selection'),
+   path('start_quiz/<int:quiz_id>/', views.start_quiz, name='start_quiz'),
+   path('quiz/<int:quiz_id>/question/<int:question_index>/', views.quiz_question, name='quiz_question'),
+   path('quiz/<int:quiz_id>/complete', views.quiz_complete, name='quiz_complete'),
+   path('quiz-result/<int:quiz_result_id>/', views.quiz_result, name='quiz_result'),
+   path('quiz_result_all', views.quiz_result_all, name='quiz_result_all'),
+   path('all_certificates/', views.student_certificates, name='all_certificates'),
+   
+   
+   path('teachers',views.teachers, name='teachers'),
+   
 ]
 
    

@@ -1,0 +1,42 @@
+{% extends 'student/base_student_dashboard.html' %}
+{% load static %}
+
+{% block home_content %}
+<div class="nav-align-top m-4">
+  <!-- Dynamic Course Tabs -->
+  <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+    {% for course in courses %}
+    <li class="nav-item">
+      <button type="button" class="nav-link {% if forloop.first %}active{% endif %}" role="tab" data-bs-toggle="tab"
+        data-bs-target="#course-{{ course.id }}" aria-controls="course-{{ course.id }}" 
+        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+        {{ course.course.title }}
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <!-- Dynamic Course Content -->
+  <div class="tab-content">
+    {% for course in courses %}
+    <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="course-{{ course.id }}" role="tabpanel">
+      <h3 class="mb-3">{{ course.course.title }}</h3>
+      <p>Details about {{ course.course.title }} will be displayed here.</p>
+
+      {% if course.course.quizzes.all %}
+        <!-- Loop over quizzes for each course -->  
+        {% for quiz in course.course.quizzes.all %} <!-- this loop can be removed by add a true false in model.  -->
+          <a href=" {% url 'start_quiz' quiz_id=quiz.id %} ">
+            <button type="button" class="btn btn-outline-primary mt-3">Start Quiz</button>
+          </a>
+        {% endfor %}
+      {% else %}
+        <p style="color: red;">No quizzes available for this course.</p>
+
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

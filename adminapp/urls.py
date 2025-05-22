@@ -35,6 +35,13 @@ urlpatterns = [
     
     path('profile/', views.profile_view, name='profile_view'),
     
+    
+    path('contact_us', views.contact_us, name='contact_us'),
+    path('about_us', views.about_us, name='about_us'),
+    # path('course_detail/<int:course_id>/', views.course_detail, name='course_detail'),
+    path('course_watch', views.course_watch, name='course_watch'),
+    path('admin_approval_view', views.admin_approval_view, name='admin_approval'),
+    
         
 ]
 
