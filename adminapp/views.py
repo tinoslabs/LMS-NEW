@@ -23,7 +23,7 @@ from .forms import AdminUserForm
 from student.models import Student,Categoriestheory
 from  parent.models import Parent 
 from guest.models import Guest
-from teacher.models import Teacher,Categories,Course,CourseResource
+from teacher.models import Teacher,Categories,Course,CourseResource,Certificate
 from django.db.models import Count
 
 
@@ -237,9 +237,25 @@ def guest_dashboard(request):
 
 @login_required
 @allowed_roles(['admin'])
+# def all_users_list(request):
+#     users = Account.objects.all()
+#     return render(request,'adminapp/all_user_list.html',{'users':users}) 
 def all_users_list(request):
-    users = Account.objects.all()
-    return render(request,'adminapp/all_user_list.html',{'users':users}) 
+    role = request.GET.get('role')
+    if role:
+        if role == 'admin':
+            users = Account.objects.filter(is_admin=True)
+        elif role == 'superuser':
+            users = Account.objects.filter(is_superadmin=True)
+        else:
+            users = Account.objects.filter(roles__iexact=role)  # Handles 'teacher', 'student', 'parent', 'guest'
+    else:
+        users = Account.objects.all()
+    return render(request, 'adminapp/all_user_list.html', {'users': users})
+
+
+
+
 
 
 def roles(request):
@@ -422,3 +438,29 @@ def admin_approval_view(request):
         return redirect('admin_approval')
 
     return render(request, 'adminapp/admin_approval.html', {'instructors': instructors})
+
+
+
+def instructor_list(request):
+    instructors = Account.objects.filter(roles='Teacher')
+    return render(request, 'adminapp/instructor_list.html', {'instructors': instructors})
+
+
+
+def student_list(request):
+    students = User.objects.filter(roles='student')
+    return render(request, 'adminapp/student_list.html', {
+        'students': students
+    })
+
+
+def get_verified_quiz_results(request):
+    # Step 1: Get the quiz for the given course (assuming there's one quiz per course)
+    verified_quiz_results = Certificate.objects.filter(verified = True)
+
+    return render(request, 'adminapp/quiz/verified_quiz_results.html', {'verified_quiz_results':verified_quiz_results} )
+
+
+def all_courses(request):
+    courses = Course.objects.all()
+    return render(request,'adminapp/all_courses.html',{'courses':courses})   

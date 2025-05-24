@@ -25,8 +25,7 @@ urlpatterns = [
    path('quiz-result/<int:quiz_result_id>/', views.quiz_result, name='quiz_result'),
    path('quiz_result_all', views.quiz_result_all, name='quiz_result_all'),
    path('all_certificates/', views.student_certificates, name='all_certificates'),
-   
-   
+
    path('teachers',views.teachers, name='teachers'),
    
 ]

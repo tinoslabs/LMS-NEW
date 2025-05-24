@@ -95,5 +95,6 @@ urlpatterns = [
     # quiz results
     path('quiz_results/<int:quiz_id>', views.get_quiz_results_for_course, name='quiz_results'),
     path('verify_result/<int:quiz_result_id>', views.verify_result, name='verify_result'),
+    # path('Instructor_ListView/',InstructorListView.as_view(), name='InstructorListView'),
 
 ]

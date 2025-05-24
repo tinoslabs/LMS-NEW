@@ -71,11 +71,13 @@
                                         <i class="bx bx-filter-alt"></i> All Roles
                                     </button>
                                     <ul class="dropdown-menu w-100" aria-labelledby="roleFilterDropdown">
-                                        <li><a class="dropdown-item active" href="#" data-value=""><i class="bx bx-group"></i> All Roles</a></li>
-                                        <li><a class="dropdown-item" href="#" data-value="Admin"><i class="bx bx-user-check"></i> Admin</a></li>
-                                        <li><a class="dropdown-item" href="#" data-value="Instructor"><i class="bx bx-chalkboard"></i> Instructor</a></li>
-                                        <li><a class="dropdown-item" href="#" data-value="Student"><i class="bx bx-book"></i> Student</a></li>
-                                        <li><a class="dropdown-item" href="#" data-value="Superuser"><i class="bx bx-shield"></i> Superuser</a></li>
+                                        <li><a class="dropdown-item {% if not request.GET.role %}active{% endif %}" href="?role="><i class="bx bx-group"></i> All Roles</a></li>
+                                        <li><a class="dropdown-item {% if request.GET.role == 'admin' %}active{% endif %}" href="?role=admin"><i class="bx bx-user-check"></i> Admin</a></li>
+                                        <li><a class="dropdown-item {% if request.GET.role == 'teacher' %}active{% endif %}" href="?role=teacher"><i class="bx bx-chalkboard"></i> Instructor</a></li>
+                                        <li><a class="dropdown-item {% if request.GET.role == 'student' %}active{% endif %}" href="?role=student"><i class="bx bx-book"></i> Student</a></li>
+                                        <li><a class="dropdown-item {% if request.GET.role == 'parent' %}active{% endif %}" href="?role=parent"><i class="bx bx-user"></i> Parent</a></li>
+                                        <li><a class="dropdown-item {% if request.GET.role == 'guest' %}active{% endif %}" href="?role=guest"><i class="bx bx-user-voice"></i> Guest</a></li>
+                                        <li><a class="dropdown-item {% if request.GET.role == 'superuser' %}active{% endif %}" href="?role=superuser"><i class="bx bx-shield"></i> Superadmin</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -300,6 +302,8 @@
         await fetch(this.action, { method: 'POST', body: formData });
         window.location.reload();
     });
+
+    
 </script>
 
 

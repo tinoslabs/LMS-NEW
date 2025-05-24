@@ -41,7 +41,11 @@ urlpatterns = [
     # path('course_detail/<int:course_id>/', views.course_detail, name='course_detail'),
     path('course_watch', views.course_watch, name='course_watch'),
     path('admin_approval_view', views.admin_approval_view, name='admin_approval'),
+    path('instructor-list/', views.instructor_list, name='instructor_list'),
+    path('student_list', views.student_list, name='student_list'),
+    path('verified_results', views.get_verified_quiz_results, name='verified_results'),
     
+    path('all_courses', views.all_courses, name='all_courses'),
         
 ]
 

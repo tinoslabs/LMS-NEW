@@ -1,0 +1,218 @@
+{% extends "dashboard/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Table / </span>Verified Quiz Result</h4>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    
+                    <div class="row align-items-center flex-nowrap">
+                        {% comment %} {% include 'components/msg.html' %} {% endcomment %}
+                        <div class="col">  
+                            <h5 class="card-header">Upload Certificate
+                        </div>
+
+                        
+
+                        <!-- <div class="col-auto me-4">
+                            <a href="{% url 'create_quiz' %}" class="btn btn-primary">Add New Quiz</a>  <span class="fw-bold fs-4">{{ quiz_results.0.quiz.title }}</span></h5>
+                        </div> -->
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Student Name</th>
+                                        <!-- <th>Correct Answers</th> -->
+                                        <th>Course Name</th>                                        
+                                        <th>Percentage</th>
+                                        <th  style="text-align: center;">Quiz Submitted On</th>
+                                        <th  style="text-align: center;">Status</th>
+                                        <th  style="text-align: center;">Certificate</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    {% for verified_quiz_result in verified_quiz_results %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ verified_quiz_result.quiz_result.user.username }}</td>
+                                        <td>{{ verified_quiz_result.quiz_result.quiz.title }}</td>
+                                        <td>
+                                            <div class="badge bg-label-primary">
+                                                {{ verified_quiz_result.quiz_result.score_percentage }}%
+                                            </div>
+                                        </td>
+                                        <td>{{ verified_quiz_result.quiz_result.date_taken|date:"F j, Y" }}</td>
+                                        <td>
+                                            {% if verified_quiz_result.verified %}
+                                                <span class="btn btn-secondary btn-sm" disabled>Verified</span>
+                                            {% else %}
+                                                <a href="#" class="btn btn-warning btn-sm">Verification Pending</a>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if verified_quiz_result.uploaded %}
+                                                <div class="btn-group">
+                                                    <!-- Preview Button -->
+                                                    <button 
+                                                        class="btn btn-info btn-sm me-2" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#previewCertificateModal{{ verified_quiz_result.id }}">
+                                                        <i class="bx bx-search"></i> Preview
+                                                    </button>
+
+                                                    
+                                                    <!-- Download Button -->
+                                                    <a href="{{ verified_quiz_result.certificate_file.url }}" 
+                                                       class="btn btn-primary btn-sm me-2"
+                                                       download="{{ verified_quiz_result.quiz_result.quiz.title }}_{{ verified_quiz_result.quiz_result.user.username }}{{ verified_quiz_result.certificate_file.url|slice:'-4:' }}">
+                                                        <i class="bx bx-download"></i> Download
+                                                    </a>
+                                                </div>
+
+                                                
+                                                
+                                            
+                                                <!-- Preview Modal -->
+                                                <div class="modal fade" id="previewCertificateModal{{ verified_quiz_result.id }}" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Certificate Preview - {{ verified_quiz_result.quiz_result.quiz.title }} ({{ verified_quiz_result.quiz_result.user.username }})</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-center">
+                                                                {% with file_extension=verified_quiz_result.certificate_file.url|slice:'-4:' %}
+                                                                    {% if file_extension == '.pdf' %}
+                                                                        <object 
+                                                                            data="{{ verified_quiz_result.certificate_file.url }}" 
+                                                                            type="application/pdf" 
+                                                                            width="100%" 
+                                                                            height="600px">
+                                                                            <p>Unable to display PDF. <a href="{{ verified_quiz_result.certificate_file.url }}" target="_blank">Click here to view</a></p>
+                                                                        </object>
+                                                                    {% else %}
+                                                                        <img src="{{ verified_quiz_result.certificate_file.url }}" 
+                                                                             class="img-fluid" 
+                                                                             alt="Certificate Preview">
+                                                                    {% endif %}
+                                                                {% endwith %}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <a href="{{ verified_quiz_result.certificate_file.url }}" 
+                                                                   class="btn btn-primary"
+                                                                   download="{{ verified_quiz_result.quiz_result.quiz.title }}_{{ verified_quiz_result.quiz_result.user.username }}{{ verified_quiz_result.certificate_file.url|slice:'-4:' }}">
+                                                                    <i class="bx bx-download"></i> Download
+                                                                </a>
+                                                            </div>
+
+                                                            
+
+                                                        </div>
+                                                    </div>
+                                                </div>                                                
+                                            
+                                            {% else %}
+                                                <!-- Modal Trigger -->
+                                                <div style="text-align: center;">
+                                                    <button 
+                                                        class="btn btn-warning btn-sm" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#uploadCertificateModal{{ verified_quiz_result.id }}">
+                                                        Upload Certificate
+                                                    </button>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                
+                                    <!-- Modal for this row -->
+                                    <div class="modal fade" id="uploadCertificateModal{{ verified_quiz_result.id }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Upload Certificate for {{ verified_quiz_result.quiz_result.user.username }}</h5> <br><br>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form 
+                                                    method="POST" 
+                                                    enctype="multipart/form-data" 
+                                                    action="{% url 'upload_certificate' verified_quiz_result.id %}">
+                                                    {% csrf_token %}
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <h5 class="modal-title">Quiz : {{ verified_quiz_result.quiz_result.quiz.title }}</h5>
+
+                                                            <label for="certificateFile{{ verified_quiz_result.id }}" class="form-label mt-4 mb-4">
+                                                                Upload Certificate File
+                                                            </label>
+                                                            <input 
+                                                                type="file" 
+                                                                class="form-control" 
+                                                                id="certificateFile{{ verified_quiz_result.id }}" 
+                                                                name="certificate_file" 
+                                                                accept=".pdf, .jpg, .jpeg, .png" 
+                                                                required>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="6">Quiz results are not available.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                
+                                   
+                            </table>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!-- / Content -->
+        </div>
+    </div>
+</div>
+<style>
+    .modal-body object,
+    .modal-body img {
+        max-width: 100%;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .badge {
+        font-size: 0.9em;
+        padding: 0.5em 0.7em;
+    }
+</style>
+
+{% endblock %}

@@ -1503,3 +1503,12 @@ def get_top_instructors():
 
 
 
+# class InstructorListView(LoginRequiredMixin, ListView):
+#     model = Instructor
+#     template_name = 'teacher/teacher_details.html'
+#     context_object_name = 'instructor'
+#     paginate_by = 10
+
+#     def get_queryset(self):
+#         # Filter instructors based on the logged-in user
+#         return Instructor.objects.filter(user=self.request.user)

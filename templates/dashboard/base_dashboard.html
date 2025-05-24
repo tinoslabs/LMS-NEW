@@ -204,19 +204,18 @@
                   <div data-i18n="Perfect Scrollbar">Category List</div>
                 </a>
               </li>
-
             </ul>
           </li>
 
           <!-- Extended components -->
           <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
+            <a href="{% url 'instructor_list' %}" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-copy"></i>
               <div data-i18n="Extended UI">Lecture</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="#" class="menu-link">
+                <a href="{% url 'instructor_list' %}" class="menu-link">
                   <div data-i18n="Perfect Scrollbar">Lecture List</div>
                 </a>
               </li>
@@ -225,13 +224,13 @@
           </li>
 
           <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
+            <a href="{% url 'student_list' %}" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-copy"></i>
               <div data-i18n="Extended UI">Student</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="#" class="menu-link">
+                <a href="{% url 'student_list' %}" class="menu-link">
                   <div data-i18n="Perfect Scrollbar">Student List</div>
                 </a>
               </li>
@@ -240,7 +239,7 @@
           </li>
 
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{% url 'verified_results' %}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-crown"></i>
               <div data-i18n="Boxicons">Certificate</div>
             </a>
@@ -248,7 +247,7 @@
 
 
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{% url 'all_courses' %}" class="menu-link">
               <i class="menu-icon tf-icons bx bx-crown"></i>
               <div data-i18n="Boxicons">All Programs</div>
             </a>

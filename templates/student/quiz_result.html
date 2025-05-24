@@ -1,0 +1,94 @@
+{% extends 'student/base_student_dashboard.html' %}
+{% block home_content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Quiz Results</h4>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <h5 class="card-header">{{ quiz_result.quiz.title }}</h5>
+                    <div class="card-body">
+                        <h4>Quiz Completed!</h4>
+                        <p>You have completed the quiz. Here are your results:</p>
+                        <ul>
+                            <li>Total Questions: {{ quiz_result.total_questions }}</li>
+                            <li>Correct Answers: {{ quiz_result.correct_answers }}</li>
+                            <li>Score: {{ quiz_result.score_percentage }}%</li>
+                        </ul>
+
+                        <!-- Add any additional feedback or message here -->
+                        {% if quiz_result.score_percentage >= 80 %}
+                        <p>Great job! You scored above 80%.</p>
+                        {% elif quiz_result.score_percentage >= 50 %}
+                        <p>Good effort! You scored above 50%, keep practicing.</p>
+                        {% else %}
+                        <p>Keep trying! Don't give up, you'll do better next time.</p>
+                        {% endif %}
+
+                        <a href="{% url 'student_dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#largeModal">
+                            View Answers
+                        </button>
+
+
+                        <!-- Large Modal -->
+                        <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel3">Your Answers</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="table-responsive text-nowrap">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Question</th>
+                                                        <th>Your Answer</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-border-bottom-0">
+                                                    {% for data in result_data %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ data.question }}</td>
+                                                        <td>{{ data.chosen_answer }}</td>
+                                                        <td>
+                                                            {% if data.is_correct %}
+                                                            <span class="badge bg-label-success me-1">Correct</span>
+                                                            {% else %}
+                                                            <span class="badge bg-label-warning me-1">Wrong</span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

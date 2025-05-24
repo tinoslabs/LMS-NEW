@@ -1,0 +1,35 @@
+{% extends "dashboard/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="card my-4">
+  <h5 class="card-header">Student List</h5>
+  <div class="table-responsive text-nowrap">
+      <table class="table table-dark">
+          <thead>
+              <tr>
+                  <th>Username</th>
+                  <th>Email</th>
+              </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+              {% for student in students %}
+              <tr>
+                  <td>
+                      <a href="" style="text-decoration: none; color: inherit;">
+                          <strong>{{ student.username }}</strong>
+                      </a>
+                  </td>
+                  <td>{{ student.email }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                  <td colspan="2" class="text-center">No students found.</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+</div>
+{% endblock %}
