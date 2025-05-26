@@ -153,13 +153,13 @@
               </li>
 
               <li class="menu-item">
-                <a href="{% url 'login_view' %}" class="menu-link" target="_blank">
+                <a href="{% url 'login' %}" class="menu-link" target="_blank">
                   <div data-i18n="">User Login</div>
                 </a>
               </li>
 
               <li class="menu-item">
-                <a href="" class="menu-link" target="_blank">
+                <a href="{% url 'register' %}" class="menu-link" target="_blank">
                   <div data-i18n="Basic">User Register</div>
                 </a>
               </li>
@@ -315,7 +315,7 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="{% url 'profile_view' %}">
                       <i class="bx bx-user me-2"></i>
                       <span class="align-middle">My Profile</span>
                     </a>
