@@ -172,9 +172,10 @@ def login(request):
             print(f'{email},{password}')
             
             # Use 'username' instead of 'email' for authentication
-            user = authenticate(request, email=email, password=password)
+            # user = authenticate(request, email=email, password=password)
+            user = authenticate(request, username=email, password=password)
             
-            if user:
+            if user is not None:
                 if not user.is_verified:
                     messages.error(request, 'Please verify your account first.')
                     print('Please verify your account first.')
@@ -237,9 +238,6 @@ def guest_dashboard(request):
 
 @login_required
 @allowed_roles(['admin'])
-# def all_users_list(request):
-#     users = Account.objects.all()
-#     return render(request,'adminapp/all_user_list.html',{'users':users}) 
 def all_users_list(request):
     role = request.GET.get('role')
     if role:
@@ -252,9 +250,6 @@ def all_users_list(request):
     else:
         users = Account.objects.all()
     return render(request, 'adminapp/all_user_list.html', {'users': users})
-
-
-
 
 
 
@@ -322,60 +317,107 @@ def profile_view(request):
 
 def admin_register(request):
     if request.method == 'POST':
+        # Get form data
+        user_id = request.POST.get('user_id')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
-        phone_number = request.POST.get('phone_number')  # Added phone number
-        address = request.POST.get('address')            # Added address
-        role = request.POST.get('role')    
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        phone_number = request.POST.get('phone_number')
+        address = request.POST.get('address')
+        role = request.POST.get('role').lower()
+        is_approved = request.POST.get('is_approved', 'false') == 'true'
+        status = request.POST.get('status', 'true') == 'true'
 
-        # Error handling
-        if password != confirm_password:
-            messages.error(request, 'Passwords do not match')
-            return redirect('admin_registration')
+        try:
+            if user_id:  # Edit existing user
+                user = Account.objects.get(id=user_id)
+                user.first_name = first_name
+                user.last_name = last_name
+                user.username = username
+                user.email = email
+                user.phone_number = phone_number
+                user.address = address
+                user.roles = role
+                user.is_active = status
+                
+                if password1 and password2 and password1 == password2:
+                    user.set_password(password1)
+                
+                user.save()
+                
+                # Handle instructor specific fields
+                if role == 'teacher':
+                    teacher, created = Teacher.objects.get_or_create(user=user)
+                    teacher.is_approved = is_approved
+                    teacher.save()
+                
+                messages.success(request, 'User updated successfully')
+            else:  # Create new user
+                # Validation
+                if Account.objects.filter(email=email).exists():
+                    messages.error(request, 'Email is already registered')
+                    return redirect('all_users_list')
 
-        if Account.objects.filter(email=email).exists():
-            messages.error(request, 'Email is already taken')
-            return redirect('admin_registration')
+                if Account.objects.filter(username=username).exists():
+                    messages.error(request, 'Username is already taken')
+                    return redirect('all_users_list')
 
-        if Account.objects.filter(username=username).exists():
-            messages.error(request, 'Username is already taken')
-            return redirect('admin_registration')
-        
-        # Admin status handling
-        is_admin = True if role == 'admin' else False
+                if not password1 or password1 != password2:
+                    messages.error(request, 'Passwords do not match')
+                    return redirect('all_users_list')
 
-        # Creating Admin User
-        user = Account.objects.create_superuser(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            password=password
-        )
-        user.phone_number = phone_number
-        user.address = address
-        user.roles = role
-        user.is_admin = is_admin
-        user.save()
-        
-        if role == 'student':
-            Student.objects.create(user=user)
-        elif role == 'parent':
-            Parent.objects.create(user=user)
-        elif role == 'guest':
-            Guest.objects.create(user=user)
-        elif role == 'teacher':
-            Teacher.objects.create(user=user)
+                # Create user
+                if role == 'admin':
+                    user = Account.objects.create_superuser(
+                        first_name=first_name,
+                        last_name=last_name,
+                        username=username,
+                        email=email,
+                        password=password1,
+                        roles=role
+                    )
+                else:
+                    user = Account.objects.create_user(
+                        first_name=first_name,
+                        last_name=last_name,
+                        username=username,
+                        email=email,
+                        password=password1,
+                        roles=role
+                    )
 
-        messages.success(request, f'{role.capitalize()} registered successfully. Now assign permissions.')
-        return redirect('search_and_select')+ f'?keyword={user.unique_key}'
+                # Set additional fields
+                user.is_verified = True 
+                user.phone_number = phone_number
+                user.address = address
+                user.is_active = status
+                user.save()
 
-    return render(request, 'admin_registration.html')
+                # Create role-specific profile
+                if role == 'student':
+                    Student.objects.get_or_create(user=user)
+                elif role == 'parent':
+                    Parent.objects.get_or_create(user=user)
+                elif role == 'guest':
+                    Guest.objects.get_or_create(user=user)
+                elif role == 'teacher':
+                    Teacher.objects.get_or_create(
+                        user=user,
+                        is_approved=is_approved
+                    )
 
+                messages.success(request, f'{role.capitalize()} created successfully')
+            
+            return redirect('all_users_list')
+            
+        except Exception as e:
+            messages.error(request, f'Error: {str(e)}')
+            return redirect('all_users_list')
+
+    return redirect('all_users_list')
 
 def contact_us(request):
     category=Categories.objects.all().order_by('id')[0:6]
@@ -395,6 +437,7 @@ def get_top_instructors():
         .annotate(course_count=Count('instructor__course'))
         .order_by('-course_count')[:4]
     )
+    
     return top_instructors
 
 
@@ -464,3 +507,14 @@ def get_verified_quiz_results(request):
 def all_courses(request):
     courses = Course.objects.all()
     return render(request,'adminapp/all_courses.html',{'courses':courses})   
+
+
+@user_passes_test(lambda u: u.is_superadmin)
+def delete_user(request, user_id):
+    try:
+        user = Account.objects.get(id=user_id)
+        user.delete()
+        messages.success(request, 'User deleted successfully')
+    except Exception as e:
+        messages.error(request, f'Error deleting user: {str(e)}')
+    return redirect('all_users_list')

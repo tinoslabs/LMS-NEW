@@ -31,7 +31,7 @@ urlpatterns = [
     path('guest_profile/', views.profile_view, name='guest_profile'),
     path('parent_profile/',views.profile_view,name='parent_profile'),
     
-    path('admin_register/', views.admin_register, name='admin_register'), 
+    path('admin_register/', views.admin_register, name='admin_register'),
     
     path('profile/', views.profile_view, name='profile_view'),
     
@@ -46,6 +46,8 @@ urlpatterns = [
     path('verified_results', views.get_verified_quiz_results, name='verified_results'),
     
     path('all_courses', views.all_courses, name='all_courses'),
+    path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
         
 ]
 
+ 

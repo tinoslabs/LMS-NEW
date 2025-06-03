@@ -7,16 +7,16 @@ from django.contrib.auth.decorators import login_required
 from .decorators import allowed_roles
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
-from django.db.models.expressions import Case, Func, Star, Value, When
+from django.db.models.expressions import Case, Func, Value, When,Star
 from django.core.exceptions import FieldError, FullResultSet
 from django.db.models.functions.mixins import (
     FixDurationInputMixin,
     NumericOutputFieldMixin,
 )
 from .models import Teacher, Teacher_ProfilePermission
-from teacher.models import UserCourses, Course
+from teacher.models import UserCourses, Course,Categories
 from django.db.models import Count
-
+from django.contrib import admin
 
 
 def assign_teacher_permissions(request, user_id):
@@ -1501,7 +1501,10 @@ def get_top_instructors():
     )
     return top_instructors
 
+class CategoriesAdmin(admin.ModelAdmin):
+    pass
 
+# admin.site.register(Categories, CategoriesAdmin) 
 
 # class InstructorListView(LoginRequiredMixin, ListView):
 #     model = Instructor

@@ -39,6 +39,7 @@ class MyAccountManager(BaseUserManager):
         user.is_staff = True
         user.is_superadmin = True
         user.is_verified = True
+        user.is_approved = True
         user.save(using=self._db)
         return user
 

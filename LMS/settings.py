@@ -28,11 +28,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'adminapp',
+    'adminapp.apps.AdminappConfig',
     'guest',
     'teacher',
     'student',
-    'parent'
+    'parent',
+    
 ]
 
 MIDDLEWARE = [
