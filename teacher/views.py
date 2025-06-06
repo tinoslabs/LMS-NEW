@@ -89,8 +89,73 @@ def assign_teacher_permissions(request, user_id):
             permissions.edit_Quiz = form.cleaned_data['edit_Quiz']
             permissions.delete_Quiz = form.cleaned_data['delete_Quiz']
 
-            permissions.save()
+            
+            
+            # all_permissions = [
+            #     permissions.can_manage,
+            #     permissions.can_create,
+            #     permissions.can_edit,
+            #     permissions.can_delete,
 
+            #     permissions.manage_categories,
+            #     permissions.create_categories,
+            #     permissions.edit_categories,
+            #     permissions.delete_categories,
+
+            #     permissions.manage_Instructor,
+            #     permissions.create_Instructor,
+            #     permissions.edit_Instructor,
+            #     permissions.delete_Instructor,
+
+            #     permissions.manage_Levels,
+            #     permissions.create_Levels,
+            #     permissions.edit_Levels,
+            #     permissions.delete_Levels,
+
+            #     permissions.manage_Language,
+            #     permissions.create_Language,
+            #     permissions.edit_Language,
+            #     permissions.delete_Language,
+
+            #     permissions.manage_Course,
+            #     permissions.create_Course,
+            #     permissions.edit_Course,
+            #     permissions.delete_Course,
+
+            #     permissions.manage_Lesson,
+            #     permissions.create_Lesson,
+            #     permissions.edit_Lesson,
+            #     permissions.delete_Lesson,
+
+            #     permissions.manage_CourseResource,
+            #     permissions.create_CourseResource,
+            #     permissions.edit_CourseResource,
+            #     permissions.delete_CourseResource,
+
+            #     permissions.manage_What_u_learn,
+            #     permissions.create_What_u_learn,
+            #     permissions.edit_What_u_learn,
+            #     permissions.delete_What_u_learn,
+
+            #     permissions.manage_Requirements,
+            #     permissions.create_Requirements,
+            #     permissions.edit_Requirements,
+            #     permissions.delete_Requirements,
+
+            #     permissions.manage_VideoModels,
+            #     permissions.create_VideoModels,
+            #     permissions.edit_VideoModels,
+            #     permissions.delete_VideoModels,
+
+            #     permissions.manage_Quiz,
+            #     permissions.create_Quiz,
+            #     permissions.edit_Quiz,
+            #     permissions.delete_Quiz,
+            # ]
+            # teacher.is_guest = not all(all_permissions)
+            # teacher.save()
+            permissions.save()
+            
             messages.success(request, f"Permissions assigned successfully to {account.first_name} {account.last_name}.")
             return redirect('teacher_success_page', user_id=user_id)  # Redirect to teacher success page
         else:

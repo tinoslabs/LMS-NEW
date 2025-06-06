@@ -252,6 +252,26 @@ def all_users_list(request):
     return render(request, 'adminapp/all_user_list.html', {'users': users})
 
 
+# @login_required
+# @allowed_roles(['admin'])
+# def all_users_list(request):
+#     role = request.GET.get('role')
+#     if role:
+#         if role == 'admin':
+#             users = Account.objects.filter(is_admin=True)
+#         elif role == 'superuser':
+#             users = Account.objects.filter(is_superadmin=True)
+#         elif role == 'Teacher':
+#             users = Account.objects.filter(teacher_profile__is_guest=False)
+#         elif role == 'guest':
+#             users = Account.objects.filter(teacher_profile__is_guest=True)
+#         else:
+#             users = Account.objects.filter(roles__iexact=role)  # Handles 'teacher', 'student', 'parent', 'guest'
+#     else:
+#         users = Account.objects.all()
+#     return render(request, 'adminapp/all_user_list.html', {'users': users})
+
+
 
 def roles(request):
     return render(request,'adminapp/roles_form.html')

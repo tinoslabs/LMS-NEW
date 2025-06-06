@@ -5,7 +5,7 @@ from django.core.validators import FileExtensionValidator
 
 class Teacher(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name="teacher_profile")
-
+    # is_guest = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
 
