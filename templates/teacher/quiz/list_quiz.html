@@ -1,0 +1,75 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Quiz</h4>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    
+                    <div class="row align-items-center flex-nowrap">
+                        <div class="col">
+                            <h5 class="card-header">Quiz List</h5>
+                        </div>
+                        <div class="col-auto me-4">
+                            <a href="{% url 'create_quiz' %}" class="btn btn-primary">Add New Quiz</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Quiz Title</th>
+                                        <th>Course</th>
+                                        <th>Created</th>
+                                        <th>Action</th>
+                                        <th>Results</th>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    {% for quiz in quizzes %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ quiz.title }}</td>
+                                        <td>{{ quiz.course.title }}</td>
+                                        <td>{{ quiz.created_at|date:"F j, Y" }}</td>
+                                        
+                                        <td>
+                                            <a href="{% url 'edit_quiz' quiz.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="{% url 'delete_quiz' quiz.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'quiz_results' quiz.id %}" class="btn btn-primary btn-sm">View Results</a>
+                                        </td>
+                                        
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="6">Quiz are not added yet</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!-- / Content -->
+        </div>
+    </div>
+</div>
+{% endblock %}

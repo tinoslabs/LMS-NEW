@@ -1,0 +1,42 @@
+/* Ensure images are consistent in size and responsive */
+#category-part .category-image {
+    width: 100%; /* Ensures the image fills the container width */
+    height: 150px; /* Uniform height for all images */
+    object-fit: cover; /* Scales image without distortion */
+    display: block; /* Proper alignment */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f0f0f0; /* Background for missing images */
+}
+
+/* Style for the category text */
+#category-part .category-text h2 {
+    font-size: 2rem;
+    text-align: left;
+}
+
+/* Responsive Design: Tablet Screens */
+@media (max-width: 768px) {
+    #category-part .category-image {
+        height: 120px; /* Smaller height for tablets */
+    }
+
+    #category-part .category-text h2 {
+        font-size: 1.75rem; /* Adjust font size */
+        text-align: center; /* Center align text */
+    }
+}
+
+/* Responsive Design: Mobile Screens */
+@media (max-width: 480px) {
+    #category-part .category-image {
+        height: 100px; /* Smaller height for mobile */
+    }
+
+    #category-part .category-text h2 {
+        font-size: 1.5rem; /* Smaller text for mobile */
+        text-align: center; /* Center align text */
+    }
+}
+
+
+

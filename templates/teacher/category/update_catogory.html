@@ -1,0 +1,40 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-3"><span class="text-muted fw-light">Forms /</span> Basic Inputs</h4>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <h5 class="card-header">Category</h5>
+                <div class="card-body">
+                    <form method="post" action="{% url 'update_category' category.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div>
+                            <label for="iconInput" class="form-label">Icon</label>
+                            <input type="file" class="form-control" id="iconInput" name="icon" />
+                            {% if category.icon %}
+                            <img src="{{ category.icon.url }}" alt="{{ category.name }}" style="max-height: 100px;"
+                                class="mt-2">
+                            <div id="iconHelp" class="form-text">
+                                Current Icon: {{ category.icon.name }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="nameInput" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="nameInput" placeholder="Enter category name"
+                                name="name" value="{{ form.name.value }}" />
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Update</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'student/base_student_dashboard.html' %}
+{% block home_content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> View All Results</h4>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <h5 class="card-header">Quiz Results</h5>
+                    <div class="card-body">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Quiz Title</th>
+                                        <th>Lecture</th>
+                                        <th>Course</th>
+                                        <th>Percentage</th>
+                                        <th>Action</th>
+                                        <th>Certificate Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    {% for result in quiz_results %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ result.quiz.title }}</td>
+                                            <td>{{ result.quiz.course.author.user.username }}</td>
+                                            <td>{{ result.quiz.course.title }}</td>
+                                            <td>
+                                                <div class="badge bg-label-primary">
+                                                    {{ result.score_percentage }}%
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'quiz_result' result.id %}" class="btn btn-primary btn-sm">
+                                                    View Details
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {% if result.certificate.uploaded %}
+                                                    <a href="{% url 'verify_result' result.id %}" class="btn btn-secondary btn-sm">Certificate Upload by {{result.certificate.uploaded_by.username}}</a>    
+                                                {% elif result.certificate.verified %}
+                                                    <span class="btn btn-secondary btn-sm" disabled>Certificate Not Uploaded</span>
+                                                {% else %}
+                                                    <span class="btn btn-secondary btn-sm disabled">Verification Pending</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-center">No quiz results found.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .modal-body object,
+    .modal-body img {
+        max-width: 100%;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .badge {
+        font-size: 0.9em;
+        padding: 0.5em 0.7em;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Resource</h4>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card mb-4">
+                    <h5 class="card-header">Add Course Resource</h5>
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label for="id_serial_number" class="form-label">Serial Number</label>
+                                {{ form.serial_number }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_thumbnail" class="form-label">Thumbnail</label>
+                                {{ form.thumbnail }}
+                                {% if form.instance.thumbnail %}
+                                    <img src="{{ form.instance.thumbnail.url }}" alt="Thumbnail" style="width: 50px; height: 50px;">
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_course" class="form-label">Course</label>
+                                {{ form.course }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_lesson" class="form-label">Lesson</label>
+                                {{ form.lesson }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_title" class="form-label">Title</label>
+                                {{ form.title }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_video" class="form-label">Video</label>
+                                {{ form.video }}
+                                {% if form.instance.video %}
+                                    <p>Current video: <a href="{{ form.instance.video.url }}" target="_blank">Watch Video</a></p>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_time_duration" class="form-label">Duration (seconds)</label>
+                                {{ form.time_duration }}
+                            </div>
+                            
+                            <div class="form-check mb-3">
+                                {{ form.preview }} <label class="form-check-label" for="id_preview">Preview</label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Update Video</button>
+                        </form>
+                        
+                        
+                    </div>
+                </div>
+                
+
+            
+            </div>
+            <!-- / Content -->
+
+            {% endblock %}

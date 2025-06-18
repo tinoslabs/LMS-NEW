@@ -1,0 +1,77 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Tables /</span> Requirement List</h4>
+
+        <!-- Bordered Table -->
+        <div class="card">
+            
+            <div class="row align-items-center flex-nowrap">
+                <div class="col">
+                    <h5 class="card-header">Requirement List</h5>
+                </div>
+                <div class="col-auto me-4">
+                    <a href="{% url 'add_requirement' %}" class="btn btn-primary">Add New Requirement</a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                                <th>Course</th>
+                                <th>Requirement</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for requirement in requirements %}
+                            <tr>
+                                <td>{{ requirement.course.title }}</td>
+                                <td>{{ requirement.points }}</td>
+                                <td>
+                                    <a href="{% url 'update_requirement' requirement.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                    <form method="POST" action="{% url 'delete_requirement' requirement.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3"  style="text-align: center;" >Requirements not added.</td>
+                            </tr>
+                        {% endfor %}
+                            
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/ Bordered Table -->
+
+
+    </div>
+    <!-- / Content -->
+
+
+
+    {% endblock %}
+
+
+
+
+
+
+

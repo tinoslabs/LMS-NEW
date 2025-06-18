@@ -1,0 +1,57 @@
+{% extends "dashboard/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+
+
+<!-- Bootstrap Dark Table -->
+<div class="card">
+  <h5 class="card-header">Instructor Approval</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        {% for instructor in instructors %}
+        <tr>
+          <td><strong>{{ instructor.username }}</strong></td>
+          <td>{{ instructor.email }}</td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="bx bx-dots-vertical-rounded"></i>
+              </button>
+              <div class="dropdown-menu">
+                <form method="POST" style="display:inline;">
+                  {% csrf_token %}
+                  <input type="hidden" name="user_id" value="{{ instructor.id }}">
+                  <button type="submit" name="action" value="approve" class="dropdown-item btn btn-link"
+                    style="text-decoration: none;">
+                    <i class="bx bx-check-circle me-1"></i> Approve
+                  </button>
+                  <button type="submit" name="action" value="reject" class="dropdown-item btn btn-link"
+                    style="text-decoration: none;">
+                    <i class="bx bx-x-circle me-1"></i> Reject
+                  </button>
+                </form>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3" class="text-center">No instructors awaiting approval.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

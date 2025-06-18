@@ -1,0 +1,45 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Quiz</h4>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <h5 class="card-header">Edit Quiz</h5>
+                    <div class="card-body">
+                       
+                        <form method="POST">
+                            
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="id_course" class="form-label">Course</label>
+                                {{ quiz_form.course }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_title" class="form-label">Title</label>
+                                {{ quiz_form.title }}
+                            </div>
+                            
+                            
+                            <button type="submit" class="btn btn-primary">Update Quiz</button>
+                        </form>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!-- / Content -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+            {% endblock %}

@@ -1,0 +1,136 @@
+{% extends 'student/base_student_dashboard.html' %}
+{% load static %}
+
+{% block home_content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">My /</span> Certificates
+    </h4>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <h5 class="card-header">My Certificates</h5>
+                
+                {% comment %} {% include 'components/msg.html' %} {% endcomment %}
+
+                <div class="card-body">
+                    {% if certificates %}
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Course</th>
+                                        <th>Percentage</th>
+                                        <th>Quiz Date</th>
+                                        <th>Certificate Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    {% for certificate in certificates %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ certificate.quiz_result.quiz.title }}</td>
+                                            <td>
+                                                <div class="badge bg-label-primary">
+                                                    {{ certificate.quiz_result.score_percentage }}%
+                                                </div>
+                                            </td>
+                                            <td>{{ certificate.quiz_result.date_taken|date:"F j, Y" }}</td>
+                                            <td>{{ certificate.uploaded_at|date:"F j, Y" }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <!-- Preview Button -->
+                                                    <button 
+                                                        class="btn btn-info btn-sm me-2" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#previewCertificateModal{{ certificate.id }}">
+                                                        <i class="bx bx-search"></i> View
+                                                    </button>
+                                                    
+                                                    <!-- Download Button -->
+                                                    <a href="{{ certificate.certificate_file.url }}" 
+                                                       class="btn btn-primary btn-sm"
+                                                       download="{{ certificate.quiz_result.quiz.title }}_{{ certificate.quiz_result.user.username }}{{ certificate.certificate_file.url|slice:'-4:' }}">
+                                                        <i class="bx bx-download"></i> Download
+                                                    </a>
+                                                </div>
+
+                                                <!-- Preview Modal -->
+                                                <div class="modal fade" id="previewCertificateModal{{ certificate.id }}" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">
+                                                                    Certificate - {{ certificate.quiz_result.quiz.title }}
+                                                                </h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-center">
+                                                                {% with file_extension=certificate.certificate_file.url|slice:'-4:' %}
+                                                                    {% if file_extension == '.pdf' %}
+                                                                        <object 
+                                                                            data="{{ certificate.certificate_file.url }}" 
+                                                                            type="application/pdf" 
+                                                                            width="100%" 
+                                                                            height="600px">
+                                                                            <p>Unable to display PDF. <a href="{{ certificate.certificate_file.url }}" target="_blank">Click here to view</a></p>
+                                                                        </object>
+                                                                    {% else %}
+                                                                        <img src="{{ certificate.certificate_file.url }}" 
+                                                                             class="img-fluid" 
+                                                                             alt="Certificate Preview">
+                                                                    {% endif %}
+                                                                {% endwith %}
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <a href="{{ certificate.certificate_file.url }}" 
+                                                                   class="btn btn-primary"
+                                                                   download="{{ certificate.quiz_result.quiz.title }}_{{ certificate.quiz_result.user.username }}{{ certificate.certificate_file.url|slice:'-4:' }}">
+                                                                    <i class="bx bx-download"></i> Download
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="bx bx-award fs-1 text-primary"></i>
+                            </div>
+                            <h5>No Certificates Yet</h5>
+                            <p class="text-muted">Complete your quizzes to earn certificates!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add custom styles -->
+<style>
+    .modal-body object,
+    .modal-body img {
+        max-width: 100%;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .badge {
+        font-size: 0.9em;
+        padding: 0.5em 0.7em;
+    }
+</style>
+{% endblock %}
+
+

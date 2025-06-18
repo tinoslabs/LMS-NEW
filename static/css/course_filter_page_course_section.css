@@ -1,0 +1,134 @@
+ /* Add these styles to your CSS file */
+
+
+
+ .category-menu {
+background: #fff;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.category-title {
+color: #07294d;
+font-size: 20px;
+font-weight: 600;
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 1px solid #eee;
+}
+
+.category-list {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.category-item {
+margin-bottom: 8px;
+}
+
+.category-link {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px 15px;
+color: #666;
+text-decoration: none;
+border-radius: 5px;
+transition: all 0.3s ease;
+}
+
+.category-link:hover {
+background: #edf3ff;
+color: #0056b3;
+transform: translateX(5px);
+}
+
+.category-name {
+font-size: 15px;
+font-weight: 500;
+}
+
+.category-icon {
+font-size: 12px;
+opacity: 0;
+transform: translateX(-10px);
+transition: all 0.3s ease;
+}
+
+.category-link:hover .category-icon {
+opacity: 1;
+transform: translateX(0);
+}
+
+/* Active state styling */
+.category-item.active .category-link {
+background: #0056b3;
+color: #fff;
+}
+
+.category-item.active .category-icon {
+opacity: 1;
+transform: translateX(0);
+}
+
+/* Hover effect for active item */
+.category-item.active .category-link:hover {
+background: #004494;
+}
+
+
+
+.fixed-height img {
+    height: 200px; /* Adjust the height as needed */
+    width: 100%;
+    object-fit: cover; /* Ensures the image fills the container without distortion */
+    border-radius: 5px; /* Optional: for rounded corners */
+}
+/* Pagination Styles */
+.courses-pagination {
+    margin-top: 50px;
+}
+
+.courses-pagination .pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.courses-pagination .page-item {
+    margin: 0 5px;
+}
+
+.courses-pagination .page-item .page-link {
+    color: #333;
+    background: #fff;
+    border: 1px solid #eee;
+    width: 40px;
+    height: 40px;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.courses-pagination .page-item.active .page-link {
+    background: #2c7be5;
+    border-color: #2c7be5;
+    color: #fff;
+}
+
+.courses-pagination .page-item:hover .page-link {
+    background: #f1f1f1;
+    color: #2c7be5;
+}
+
+.courses-pagination .page-item.active:hover .page-link {
+    background: #2c7be5;
+    color: #fff;
+}
+
+.courses-pagination .page-item .page-link i {
+    font-size: 14px;
+}

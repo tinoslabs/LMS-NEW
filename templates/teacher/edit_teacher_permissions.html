@@ -1,0 +1,271 @@
+{% extends "teacher/teacher_base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    /* Add padding to the body to avoid overlapping with the navbar */
+    body {
+        padding-top: 80px; /* Adjust this value based on your navbar height */
+        padding: 20px;
+        background-color: #ffffff;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .search-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .search-container .form-control {
+        flex: 1;
+    }
+    .search-wrapper {
+        display: flex;
+        flex: 1;
+        gap: 5px;
+    }
+    .search-btn {
+        padding: 10px 20px;
+        background-color: #696cff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .search-btn:hover {
+        background-color: #696cff;
+    }
+    .nav-tabs {
+        display: flex;
+        margin-bottom: 20px;
+        list-style: none;
+    }
+    .nav-item {
+        padding: 10px 20px;
+        margin-right: 5px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+        border: none;
+        background-color: transparent;
+        color: #696cff;
+    }
+    .nav-item.active {
+        background-color: #696cff;
+        color: white;
+    }
+    .section-title {
+        font-size: 18px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table th, table td {
+        padding: 12px 15px;
+        text-align: left;
+        font-size: 14px;
+    }
+    table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    table tr:nth-child(odd) {
+        background-color: #f2f2f2;
+    }
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+    .module-column {
+        width: 30%;
+    }
+    .permission-column {
+        width: 70%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .permission-item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    .submit-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #696cff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .submit-btn:hover {
+        background-color: #696cff;
+    }
+</style>
+
+<div class="container">
+    <h2 class="section-title">Assign General Permission to Teacher</h2>
+    <p>User ID: {{ user.id }}</p>
+    <form method="POST" action="{% url 'assign_teacher_permissions' teacher.id %}">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 5%;"><input type="checkbox" id="select-all"></th>
+                    <th style="width: 25%;">MODULE</th>
+                    <th style="width: 70%;">PERMISSIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Profile Permissions -->
+                <tr>
+                    <td class="checkbox-container">
+                        <input type="checkbox" class="module-checkbox" name="module" value="profile">
+                    </td>
+                    <td>Profile</td>
+                    <td class="permission-column">
+                        <div class="permission-item">
+                            <input type="checkbox" class="permission-checkbox" name="can_manage" value="True"
+                                {% if user.profile_permissions.first.can_manage %}checked{% endif %}>
+                            <label>Manage</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" class="permission-checkbox" name="can_create" value="True"
+                                {% if user.profile_permissions.first.can_create %}checked{% endif %}>
+                            <label>Create</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" class="permission-checkbox" name="can_edit" value="True"
+                                {% if user.profile_permissions.first.can_edit %}checked{% endif %}>
+                            <label>Edit</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" class="permission-checkbox" name="can_delete" value="True"
+                                {% if user.profile_permissions.first.can_delete %}checked{% endif %}>
+                            <label>Delete</label>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Categories Permissions -->
+                <tr>
+                    <td><input type="checkbox" class="module-checkbox" name="module" value="categories"></td>
+                    <td>Categories</td>
+                    <td class="permission-column">
+                        <div class="permission-item">
+                            <input type="checkbox" name="manage_categories" value="True"
+                                {% if user.profile_permissions.first.manage_categories %}checked{% endif %}>
+                            <label> Manage</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" name="create_categories" value="True"
+                                {% if user.profile_permissions.first.create_categories %}checked{% endif %}>
+                            <label>Create</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" name="edit_categories" value="True"
+                                {% if user.profile_permissions.first.edit_categories %}checked{% endif %}>
+                            <label>Edit</label>
+                        </div>
+                        <div class="permission-item">
+                            <input type="checkbox" name="delete_categories" value="True"
+                                {% if user.profile_permissions.first.delete_categories %}checked{% endif %}>
+                            <label>Delete</label>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Repeat similar rows for other modules (Instructor, Levels, Language, etc.) -->
+            </tbody>
+        </table>
+        <button type="submit" class="submit-btn">Assign Permissions</button>
+        {% with user.profile_permissions.first as permission %}
+            {% if permission %}
+                <div class="current-permissions">
+                    <h3>Current Permissions:</h3>
+                    <ul>
+                        <li>Can Manage: {{ permission.can_manage|yesno:"Yes,No" }}</li>
+                        <li>Can Create: {{ permission.can_create|yesno:"Yes,No" }}</li>
+                        <li>Can Edit: {{ permission.can_edit|yesno:"Yes,No" }}</li>
+                        <li>Can Delete: {{ permission.can_delete|yesno:"Yes,No" }}</li>
+                        <li>Manage Categories: {{ permission.manage_categories|yesno:"Yes,No" }}</li>
+                        <li>Create Categories: {{ permission.create_categories|yesno:"Yes,No" }}</li>
+                        <li>Edit Categories: {{ permission.edit_categories|yesno:"Yes,No" }}</li>
+                        <li>Delete Categories: {{ permission.delete_categories|yesno:"Yes,No" }}</li>
+                        <!-- Repeat for other permissions -->
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Handle "Select All" checkbox functionality
+        const selectAllCheckbox = document.getElementById('select-all');
+        const moduleCheckboxes = document.querySelectorAll('.module-checkbox');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function () {
+                moduleCheckboxes.forEach(moduleCheckbox => {
+                    moduleCheckbox.checked = this.checked;
+                    togglePermissions(moduleCheckbox);
+                });
+            });
+        }
+
+        // Handle individual module checkbox clicks
+        moduleCheckboxes.forEach(moduleCheckbox => {
+            moduleCheckbox.addEventListener('change', function () {
+                togglePermissions(this);
+                updateSelectAllCheckbox();
+            });
+        });
+
+        // Function to toggle permissions when module checkbox is clicked
+        function togglePermissions(moduleCheckbox) {
+            const row = moduleCheckbox.closest('tr');
+            if (row) {
+                const permissions = row.querySelectorAll('.permission-checkbox');
+                permissions.forEach(permission => {
+                    permission.checked = moduleCheckbox.checked;
+                });
+            }
+        }
+
+        // Update "Select All" checkbox state based on module checkboxes
+        function updateSelectAllCheckbox() {
+            const allChecked = Array.from(moduleCheckboxes).every(checkbox => checkbox.checked);
+            selectAllCheckbox.checked = allChecked;
+        }
+    });
+</script>
+{% endblock %}

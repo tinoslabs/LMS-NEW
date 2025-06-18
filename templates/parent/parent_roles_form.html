@@ -1,0 +1,62 @@
+
+        <!-- Section Title -->
+        <h2 class="section-title">Assign General Permission to Teacher</h2>
+        <p>User ID: {{ user.id }}</p>
+        <form method="POST" action="{% url 'assign_parent_permissions' user.pk %}">
+            {% csrf_token %}
+        
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;"><input type="checkbox" id="select-all"></th>
+                        <th style="width: 25%;">MODULE</th>
+                        <th style="width: 70%;">PERMISSIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="checkbox-container">
+                            <input type="checkbox" class="module-checkbox" name="module" value="profile">
+                        </td>
+                        <td>Profile</td>
+                        <td class="permission-column">
+                            <div class="permission-item">
+                                <input type="checkbox" class="permission-checkbox" name="can_manage" value="True"
+                                 {% if user.profile_permissions.first.can_manage %}checked{% endif %}>
+                                 <label>Manage</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" class="permission-checkbox" name="can_create" value="True"
+                                 {% if user.profile_permissions.first.can_create %}checked{% endif %}>
+                                  <label>Create</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" class="permission-checkbox" name="can_edit" value="True"
+                                 {% if user.profile_permissions.first.can_edit %}checked{% endif %}>
+                                 <label>Edit</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" class="permission-checkbox" name="can_delete" value="True"
+                                 {% if user.profile_permissions.first.can_delete %}checked{% endif %}>
+                                 <label>Delete</label>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <button type="submit" class="submit-btn">Assign Permissions</button>
+        
+            {% with user.profile_permissions.first as permission %}
+              {% if permission %}
+                <ul>
+                  <li>Can Manage: {{ permission.can_manage|yesno:"Yes,No" }}</li>
+                  <li>Can Create: {{ permission.can_create|yesno:"Yes,No" }}</li>
+                  <li>Can Edit: {{ permission.can_edit|yesno:"Yes,No" }}</li>
+                  <li>Can Delete: {{ permission.can_delete|yesno:"Yes,No" }}</li>
+                </ul>
+            {% endif %}
+            {% endwith %}
+        
+        </form>
+        

@@ -1,0 +1,95 @@
+{% extends 'base/basehome.html' %}
+{% block title %}
+    <title>Edubin - LMS Sign Up</title>
+{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="search-box">
+    <div class="serach-form">
+        <div class="closebtn">
+            <span></span>
+            <span></span>
+        </div>
+        <form action="#">
+            <input type="text" placeholder="Search by keyword">
+            <button><i class="fa fa-search"></i></button>
+        </form>
+    </div> <!-- serach form -->
+</div>
+
+<!--====== SEARCH BOX PART ENDS ======-->
+
+<!--====== PAGE BANNER PART START ======-->
+
+<section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url('{% static "images/page-banner-2.jpg" %}');">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-banner-cont">
+                    <h2>Sign Up and Start Learning!</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Sign Up</li>
+                        </ol>
+                    </nav>
+                </div>  <!-- page banner cont -->
+            </div>
+        </div> <!-- row -->
+    </div> <!-- container -->
+</section>
+
+<!-- REGISTER
+    ================================================== -->
+    <br><br>
+
+<div class="container mb-11">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5 col-xl-4">
+            <!-- Sign Up Header -->
+            <div class="text-center mb-5">
+                <h3 class="fw-bold text-primary">Sign Up and Start Learning!</h3>
+                <p class="text-muted">Create an account to access all courses</p>
+            </div>
+
+            <!-- Display Messages -->
+            
+            <form class="p-4 p-md-5 border rounded-3 shadow bg-white" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+            
+                <!-- Email Field -->
+                <div class="form-group mb-4">
+                    <label for="{{ form.email.id_for_label }}" class="form-label fw-semibold text-dark">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="text-danger">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            
+                <!-- Password Field -->
+                <div class="form-group mb-4">
+                    <label for="{{ form.password.id_for_label }}" class="form-label fw-semibold text-dark">Password</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="text-danger">{{ form.password.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            
+                <!-- Submit Button -->
+                <button class="btn btn-lg btn-primary w-100 mt-3 shadow-sm" type="submit">Log In</button>
+            </form>
+            
+            <p class="text-center mt-4 mb-0">
+                Already have an account?
+                <a class="text-primary fw-bold" href="{% url 'login' %}">Log In here</a>
+                {% csrf_token %}
+            </p>
+        </div>
+    </div>
+</div>
+
+<br><br>
+
+
+{% endblock %}

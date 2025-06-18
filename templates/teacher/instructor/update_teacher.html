@@ -1,0 +1,44 @@
+{% extends 'teacher/teacher_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Author</h4>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card mb-4">
+                    <h5 class="card-header">Instructor Form</h5>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" action="{% url 'update_instructor' %}">
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label for="designation" class="form-label">Designation</label>
+                                <input type="text" class="form-control" id="designation" placeholder="Enter designation" name="designation" value="{{ form.designation.value }}" />
+                                <div id="designationHelp" class="form-text">Enter your position.</div>
+                            </div>
+                        
+                            <div class="mb-3">
+                                <label for="aboutAuthor" class="form-label">About Author</label>
+                                <textarea class="form-control" id="aboutAuthor" placeholder="Enter instructor description" name="about_author" rows="4" required>{{ form.about_author.value }}</textarea>
+                                <div id="aboutAuthorHelp" class="form-text">Provide a short bio or description of the instructor.</div>
+                            </div>
+                        
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                        
+                    </div>
+                </div>
+                
+
+            
+            </div>
+            <!-- / Content -->
+
+            {% endblock %}
